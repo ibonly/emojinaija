@@ -8,8 +8,7 @@ use Ibonly\NaijaEmoji\Emoji;
 $app = new Slim();
 $get = new Emoji();
 
-$app->get('/', function () use ($get) {
-   // echo "Hello";
+$app->get('/emogis', function () use ($get) {
     echo $get->getAll();
 });
 
