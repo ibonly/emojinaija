@@ -2,17 +2,16 @@
 
 require 'vendor/autoload.php';
 
-// use Slim\Slim;
+use Slim\Slim;
 use Ibonly\NaijaEmoji\Emoji;
 
-// $app = new Slim();
+$app = new Slim();
+$get = new Emoji();
 
-// // $app->get('/hello/:name', function ($name) {
-// //     echo "Hello, $name";
-// // });
+$app->get('/', function () use ($get) {
+    echo "Hello";
+    echo $get->getAll();
+});
 
-$emoji = new Emoji();
 
-echo $emoji->getAll();
-
-// $app->run();
+$app->run();
