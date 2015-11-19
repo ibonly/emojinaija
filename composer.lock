@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "a68ef36278b45e583f65061454f215ca",
+    "hash": "34ea1f6c61206193f4363c6eda14294a",
     "content-hash": "46282acc7a2db872e039923e1e3c2ba7",
     "packages": [
         {
@@ -13,12 +13,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/andela-iadeniyi/Potato-ORM.git",
-                "reference": "90a755272116c567be4e3916a70f4c409de89f1c"
+                "reference": "fa54d68b22d85abd407acec1bb0181ef56f96073"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/andela-iadeniyi/Potato-ORM/zipball/90a755272116c567be4e3916a70f4c409de89f1c",
-                "reference": "90a755272116c567be4e3916a70f4c409de89f1c",
+                "url": "https://api.github.com/repos/andela-iadeniyi/Potato-ORM/zipball/fa54d68b22d85abd407acec1bb0181ef56f96073",
+                "reference": "fa54d68b22d85abd407acec1bb0181ef56f96073",
                 "shasum": ""
             },
             "require": {
@@ -46,7 +46,7 @@
                     "email": "ibonly01@gmail.com"
                 }
             ],
-            "time": "2015-11-19 17:15:42"
+            "time": "2015-11-19 17:53:17"
         },
         {
             "name": "slim/slim",
