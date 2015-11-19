@@ -19,15 +19,12 @@
         }
     },
     "scripts": {
-        "test": "phpunit",
-        "pre-update-cmd": [
-            "composer update"
-        ]
+        "test": "phpunit"
     },
     "require": {
         "php": ">=5.5",
         "slim/slim": "^2.6",
-        "ibonly/potato-orm": "dev-master"
+        "ibonly/potato-orm": "1.0.0.x-dev"
     },
     "require-dev": {
         "phpunit/phpunit": "4.8.*",
