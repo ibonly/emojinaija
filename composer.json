@@ -1,0 +1,33 @@
+{
+    "name": "ibonly/naija-emoji",
+    "authors": [
+        {
+            "name": "Adeniyi Ibraheem",
+            "email": "ibonly01@gmail.com"
+        }
+    ],
+    "autoload": {
+        "classmap": ["api/"],
+        "psr-4": {
+            "Ibonly\\NaijaEmoji\\": "api/"
+        }
+    },
+    "autoload-dev": {
+        "classmap": ["test/"],
+        "psr-4"   : {
+            "Ibonly\\NaijaEmoji\\Test\\": "test/"
+        }
+    },
+    "scripts": {
+        "test": "phpunit"
+    },
+    "require": {
+        "php": ">=5.5",
+        "slim/slim": "^2.6",
+        "ibonly/potato-orm": "dev-master"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "4.8.*",
+        "codeclimate/php-test-reporter": "dev-master"
+    }
+}
