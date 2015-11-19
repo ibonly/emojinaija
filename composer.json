@@ -19,7 +19,10 @@
         }
     },
     "scripts": {
-        "test": "phpunit"
+        "test": "phpunit",
+        "post-install-cmd" : [
+            "composer update"
+        ]
     },
     "require": {
         "php": ">=5.5",
