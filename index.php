@@ -9,7 +9,7 @@ $app = new Slim();
 $get = new Emoji();
 
 $app->get('/', function () use ($get) {
-    echo "Hello";
+   // echo "Hello";
     echo $get->getAll();
 });
 
