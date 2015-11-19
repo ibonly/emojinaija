@@ -4,21 +4,21 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "cc5ce0a7d2e4c29045b886f45b3fa14b",
-    "content-hash": "fa41f919a11c8dfb9d224d97e6193349",
+    "hash": "a68ef36278b45e583f65061454f215ca",
+    "content-hash": "46282acc7a2db872e039923e1e3c2ba7",
     "packages": [
         {
             "name": "ibonly/potato-orm",
-            "version": "dev-master",
+            "version": "1.0.0.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/andela-iadeniyi/Potato-ORM.git",
-                "reference": "ad61cdfce69844253632d884064c10016137ec7c"
+                "reference": "bad51c23a5628633ca576dd905711368bdd5ff4f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/andela-iadeniyi/Potato-ORM/zipball/ad61cdfce69844253632d884064c10016137ec7c",
-                "reference": "ad61cdfce69844253632d884064c10016137ec7c",
+                "url": "https://api.github.com/repos/andela-iadeniyi/Potato-ORM/zipball/bad51c23a5628633ca576dd905711368bdd5ff4f",
+                "reference": "bad51c23a5628633ca576dd905711368bdd5ff4f",
                 "shasum": ""
             },
             "require": {
@@ -46,7 +46,7 @@
                     "email": "ibonly01@gmail.com"
                 }
             ],
-            "time": "2015-11-19 11:52:00"
+            "time": "2015-11-19 13:19:53"
         },
         {
             "name": "slim/slim",
