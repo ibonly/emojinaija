@@ -10,5 +10,4 @@ $app->get('/', function () {
     echo "Hello";
 });
 
-
 $app->run();
