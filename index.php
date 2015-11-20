@@ -9,11 +9,11 @@ $app = new Slim();
 $get = new Emoji();
 
 $app->get('/emojis', function () use ($get) {
-    echo $get->getAll();
+    echo $get->getAll()->all();
 });
 
 $app->get('/emojis/:id', function ($id) use ($get) {
-    echo $get->where('id', $id);
+    echo $get->where('id', $id)->all();
 });
 
 $app->post('/emojis/:name', function($name){
