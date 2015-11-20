@@ -21,7 +21,7 @@ $app->post('/emojis/:name', function($name){
     $save = new Emoji();
     $save->id = NULL;
     $save->name = $name;
-    echo $save->save() . " " .$name;
+    echo $save->save();
 });
 
 $app->patch('/emojis/:id/:name', function($id, $name){
