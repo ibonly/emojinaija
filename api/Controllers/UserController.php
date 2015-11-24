@@ -19,7 +19,7 @@ class UserController
         $this->auth = new AuthController();
     }
 
-    public function createUser(Slim $app)
+    public function createUser (Slim $app)
     {
         $username = $app->request->params('username');
         $this->user->id = NULL;
@@ -33,7 +33,7 @@ class UserController
         }
     }
 
-    public function login(Slim $app)
+    public function login (Slim $app)
     {
         $app->response->headers->set('Content-Type', 'application/json');
         $username = $app->request->params('username');
@@ -56,14 +56,14 @@ class UserController
         }
     }
 
-    public function logout(Slim $app)
+    public function logout (Slim $app)
     {
         $app->response->headers->set('Content-Type', 'application/json');
         $tokenData = $app->request->headers->get('Authorization');
         try
         {
             if ( ! isset( $tokenData ) )
-                throw new \Firebase\JWT\ExpiredException();
+                throw new ExpiredException();
 
             $checkUser = $this->user->where(['username' => $tokenData->user])->all();
             if( ! empty ($checkUser) ){
@@ -72,7 +72,7 @@ class UserController
             }
         } catch ( UserNotFoundException $e) {
             $app->halt(404, json_encode(['message' => 'Not Found']));
-        } catch (\Firebase\JWT\ExpiredException $e){
+        } catch ( ExpiredException $e ){
             $app->halt(401, json_encode(['Message' => 'Not Authorized']));
         }
     }
