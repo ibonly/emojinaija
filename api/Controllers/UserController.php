@@ -1,14 +1,23 @@
 <?php
+/**
+ * UserController Managers user activity login, register and logout
+ *
+ * @package Ibonly\NaijaEmoji\UserController
+ * @author  Ibraheem ADENIYI <ibonly01@gmail.com>
+ * @license MIT <https://opensource.org/licenses/MIT>
+ */
+
 namespace Ibonly\NaijaEmoji;
 
 use Slim\Slim;
 use Ibonly\NaijaEmoji\User;
+use Ibonly\NaijaEmoji\UserInterface;
 use Ibonly\NaijaEmoji\AuthController;
 use Ibonly\PotatoORM\UserNotFoundException;
 /**
 *
 */
-class UserController
+class UserController implements UserInterface
 {
     protected $user;
     protected $auth;

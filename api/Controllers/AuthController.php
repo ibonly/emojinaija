@@ -1,13 +1,19 @@
 <?php
+/**
+ * AuthController manages the authentication i.e generation of token
+ *
+ * @package Ibonly\NaijaEmoji\AuthController
+ * @author  Ibraheem ADENIYI <ibonly01@gmail.com>
+ * @license MIT <https://opensource.org/licenses/MIT>
+ */
+
 namespace Ibonly\NaijaEmoji;
 
 use Slim\Slim;
 use Dotenv\Dotenv;
 use Firebase\JWT\JWT;
 use Ibonly\NaijaEmoji\User;
-/**
-*
-*/
+
 class AuthController
 {
     protected $key;

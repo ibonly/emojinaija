@@ -1,16 +1,27 @@
 <?php
+/**
+ * Emojinaija is a rest API service that provide access to
+ * unlimited emoji images
+ *
+ * @package Ibonly\NaijaEmoji\EmojiController
+ * @author  Ibraheem ADENIYI <ibonly01@gmail.com>
+ * @license MIT <https://opensource.org/licenses/MIT>
+ */
+
 namespace Ibonly\NaijaEmoji;
 
 use Slim\Slim;
 use Ibonly\NaijaEmoji\Emoji;
+use Firebase\JWT\EmojiInterface;
 use Firebase\JWT\ExpiredException;
 use Ibonly\NaijaEmoji\AuthController;
 use Ibonly\PotatoORM\UserNotFoundException;
 use Ibonly\PotatoORM\EmptyDatabaseException;
+
 /**
 *
 */
-class EmojiController
+class EmojiController implements EmojiInterface
 {
     protected $dataName;
     protected $header;
