@@ -12,19 +12,17 @@ namespace Ibonly\NaijaEmoji;
 
 use Slim\Slim;
 use Ibonly\NaijaEmoji\Emoji;
-use Firebase\JWT\EmojiInterface;
 use Firebase\JWT\ExpiredException;
+use Ibonly\NaijaEmoji\EmojiInterface;
 use Ibonly\NaijaEmoji\AuthController;
 use Ibonly\PotatoORM\UserNotFoundException;
 use Ibonly\PotatoORM\EmptyDatabaseException;
+use Ibonly\NaijaEmoji\ProvideTokenException;
+use Ibonly\NaijaEmoji\InvalidTokenException;
 
-/**
-*
-*/
 class EmojiController implements EmojiInterface
 {
     protected $dataName;
-    protected $header;
     protected $auth;
 
     public function __construct()
@@ -33,6 +31,13 @@ class EmojiController implements EmojiInterface
         $this->auth = new AuthController();
     }
 
+    /**
+     * getAllEmoji Get all the emoji's available
+     *
+     * @param  $app
+     *
+     * @return json
+     */
     public function getAllEmoji (Slim $app)
     {
         $app->response->headers->set('Content-Type', 'application/json');
@@ -46,6 +51,14 @@ class EmojiController implements EmojiInterface
         }
     }
 
+    /**
+     * findEmoji Find a particular emoji
+     *
+     * @param  $id
+     * @param  $app
+     *
+     * @return json
+     */
     public function findEmoji ($id, Slim $app)
     {
         $app->response->headers->set('Content-Type', 'application/json');
@@ -59,6 +72,13 @@ class EmojiController implements EmojiInterface
         }
     }
 
+    /**
+     * insertEmoji Insert new emoji
+     *
+     * @param  $app
+     *
+     * @return json
+     */
     public function insertEmoji (Slim $app)
     {
         $app->response->headers->set('Content-Type', 'application/json');
@@ -66,7 +86,7 @@ class EmojiController implements EmojiInterface
         try
         {
             if ( ! isset( $tokenData ) )
-                throw new ExpiredException();
+                throw new ProvideTokenException();
 
             $data = $this->auth->authorizationDecode($tokenData);
             $this->dataName->id = NULL;
@@ -85,9 +105,21 @@ class EmojiController implements EmojiInterface
             $app->halt(401, json_encode(['Message' => 'Not Authorized']));
         } catch ( SaveUserExistException $e ){
             $app->halt(202, json_encode(['Message' => 'Not Created']));
+        } catch ( InvalidTokenException $e ){
+            $app->halt(405, json_encode(['Message' => 'Invalid Token']));
+        } catch ( ProvideTokenException $e ){
+            $app->halt(406, json_encode(['Message' => 'Enter a valid Token']));
         }
     }
 
+    /**
+     * updateEmoji update emoji details
+     *
+     * @param  $id
+     * @param  $app
+     *
+     * @return json
+     */
     public function updateEmoji ($id, Slim $app)
     {
         $app->response->headers->set('Content-Type', 'application/json');
@@ -95,9 +127,10 @@ class EmojiController implements EmojiInterface
         try
         {
             if ( ! isset( $tokenData ) )
-                throw new ExpiredException();
+                throw new ProvideTokenException();
 
             $find = Emoji::find($id);
+            $this->auth->authorizationDecode($tokenData);
             $fields = $app->request->isPut() ? $app->request->put() : $app->request->patch();
             foreach ( $fields as $key => $value )
             {
@@ -112,22 +145,39 @@ class EmojiController implements EmojiInterface
         } catch ( SaveUserExistException $e ){
             $app->halt(304, json_encode(['Message' => 'Not Modified']));
         } catch ( UserNotFoundException $e ){
-            $app->halt(304, json_encode(['Message' => 'Not Modified']));
+            $app->halt(304, json_encode(['Message' => 'Invalid Credential supplied']));
+        } catch ( InvalidTokenException $e ){
+            $app->halt(405, json_encode(['Message' => 'Invalid Token']));
+        } catch ( ProvideTokenException $e ){
+            $app->halt(406, json_encode(['Message' => 'Enter a valid Token']));
         }
     }
 
-    public function deleteEmoji ($id)
+    /**
+     * deleteEmoji Delete already existing emoji
+     *
+     * @param  $id
+     * @param  $app
+     *
+     * @return json
+     */
+    public function deleteEmoji ($id, Slim $app)
     {
         $app->response->headers->set('Content-Type', 'application/json');
         $tokenData = $app->request->headers->get('Authorization');
         try
         {
             if ( ! isset( $tokenData ) )
-                throw new ExpiredException();
+                throw new ProvideTokenException();
 
+            $this->auth->authorizationDecode($tokenData);
             return $this->dataName->destroy($id);
         } catch ( ExpiredException $e ){
             $app->halt(401, json_encode(['Message' => 'Not Authorized']));
+        } catch ( InvalidTokenException $e ){
+            $app->halt(405, json_encode(['Message' => 'Invalid Token']));
+        } catch ( ProvideTokenException $e ){
+            $app->halt(406, json_encode(['Message' => 'Enter a valid Token']));
         }
     }
 }

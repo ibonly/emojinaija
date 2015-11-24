@@ -34,8 +34,8 @@ $app->put('/emojis/:id', function($id) use ($emoji, $app) {
     echo $emoji->updateEmoji($id, $app);
 });
 
-$app->delete('/emojis/:id', function($id) use ($emoji) {
-    echo $emoji->deleteEmoji($id);
+$app->delete('/emojis/:id', function($id) use ($emoji, $app) {
+    echo $emoji->deleteEmoji($id, $app);
 });
 
 /**

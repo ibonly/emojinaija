@@ -9,15 +9,17 @@
 
 namespace Ibonly\NaijaEmoji;
 
+use Slim\Slim;
+
 interface EmojiInterface
 {
-    public function getAllEmoji ($app);
+    public function getAllEmoji (Slim $app);
 
-    public function findEmoji ($id, $app);
+    public function findEmoji ($id, Slim $app);
 
-    public function insertEmoji ($app);
+    public function insertEmoji (Slim $app);
 
-    public function updateEmoji ($id, $app);
+    public function updateEmoji ($id, Slim $app);
 
-    public function deleteEmoji ($id);
+    public function deleteEmoji ($id, Slim $app);
 }

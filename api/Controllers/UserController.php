@@ -14,9 +14,9 @@ use Ibonly\NaijaEmoji\User;
 use Ibonly\NaijaEmoji\UserInterface;
 use Ibonly\NaijaEmoji\AuthController;
 use Ibonly\PotatoORM\UserNotFoundException;
-/**
-*
-*/
+use Ibonly\NaijaEmoji\InvalidTokenException;
+use Ibonly\NaijaEmoji\ProvideTokenException;
+
 class UserController implements UserInterface
 {
     protected $user;
@@ -28,12 +28,20 @@ class UserController implements UserInterface
         $this->auth = new AuthController();
     }
 
+    /**
+     * createUser Create a new user
+     *
+     * @param  $app
+     *
+     * @return json
+     */
     public function createUser (Slim $app)
     {
         $username = $app->request->params('username');
         $this->user->id = NULL;
         $this->user->username = $username;
         $this->user->password = $app->request->params('password');
+        $this->user->date_created = date('Y-m-d H:i:s');
 
         $save = $this->user->save();
         if( $save == 1 )
@@ -42,6 +50,13 @@ class UserController implements UserInterface
         }
     }
 
+    /**
+     * login Log user in and generate token
+     *
+     * @param  $app
+     *
+     * @return json
+     */
     public function login (Slim $app)
     {
         $app->response->headers->set('Content-Type', 'application/json');
@@ -65,6 +80,13 @@ class UserController implements UserInterface
         }
     }
 
+    /**
+     * logout Log user out and destroy token
+     *
+     * @param  $app
+     *
+     * @return json
+     */
     public function logout (Slim $app)
     {
         $app->response->headers->set('Content-Type', 'application/json');
@@ -72,7 +94,7 @@ class UserController implements UserInterface
         try
         {
             if ( ! isset( $tokenData ) )
-                throw new ExpiredException();
+                throw new ProvideTokenException();
 
             $checkUser = $this->user->where(['username' => $tokenData->user])->all();
             if( ! empty ($checkUser) ){
@@ -81,8 +103,10 @@ class UserController implements UserInterface
             }
         } catch ( UserNotFoundException $e) {
             $app->halt(404, json_encode(['message' => 'Not Found']));
-        } catch ( ExpiredException $e ){
-            $app->halt(401, json_encode(['Message' => 'Not Authorized']));
+        } catch ( InvalidTokenException $e ){
+            $app->halt(405, json_encode(['Message' => 'Invalid Token']));
+        } catch ( ProvideTokenException $e ){
+            $app->halt(406, json_encode(['Message' => 'Enter a valid Token']));
         }
     }
 }

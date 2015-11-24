@@ -9,12 +9,14 @@
 
 namespace Ibonly\NaijaEmoji;
 
+use Slim\Slim;
+
 interface UserInterface
 {
 
-    public function createUser ($app);
+    public function createUser (Slim $app);
 
-    public function login ($app);
+    public function login (Slim $app);
 
-    public function logout ($app);
+    public function logout (Slim $app);
 }

@@ -9,10 +9,12 @@
 
 namespace Ibonly\NaijaEmoji;
 
+use Exception;
 use Slim\Slim;
 use Dotenv\Dotenv;
 use Firebase\JWT\JWT;
 use Ibonly\NaijaEmoji\User;
+use Ibonly\NaijaEmoji\InvalidTokenException;
 
 class AuthController
 {
@@ -24,41 +26,76 @@ class AuthController
     public function __construct ()
     {
         $this->loadEnv();
-        $this->key = getenv('TOKEN_KEY');
-        $this->issued_by = getenv('ISSUED_BY');
-        $this->auth_url = getenv('AUTH_URL');
+        $this->key        = getenv('ISSUE_KEY');
+        $this->issued_by  = getenv('ISSUED_BY');
+        $this->auth_url   = getenv('AUTH_URL');
     }
 
+    /**
+     * getKey Get the ISSUE_KEY value
+     *
+     * @return string
+     */
     public function getKey ()
     {
         return $this->key;
     }
 
-    public function issuedBy()
+    /**
+     * getIssuedBy Get the ISSUED_BY value
+     *
+     * @return string
+     */
+    public function getIssuedBy()
     {
         return $this->issued_by;
     }
 
-    public function authUrl()
+    /**
+     * getAuthUrl Get the AUTH_URL value
+     *
+     * @return string
+     */
+    public function getAuthUrl()
     {
         return $this->auth_url;
     }
 
+    /**
+     * authorizationEncode Generate token using $username
+     *
+     * @param  $username
+     *
+     * @return string
+     */
     public function authorizationEncode ($username)
     {
         if ( ! is_null($username) )
             $token = array(
-                "iss" => $this->issuedBy(),
-                "aud" => $this->authUrl(),
+                "iss" => $this->getIssuedBy(),
+                "aud" => $this->getAuthUrl(),
                 "user" => $username,
                 "exp" => time() + 3600
             );
             return JWT::encode($token, $this->getKey());
     }
 
-    public function authorizationDecode ($jwt)
+    /**
+     * authorizationDecode Decode token
+     *
+     * @param  $token
+     *
+     * @return json
+     */
+    public function authorizationDecode ($token)
     {
-        return JWT::decode($jwt, $this->getKey(), array('HS256'));
+        try
+        {
+            return JWT::decode($token, $this->getKey(), array('HS256'));
+        } catch ( Exception $e) {
+            throw new InvalidTokenException();
+        }
+
     }
 
     protected function loadEnv ()
