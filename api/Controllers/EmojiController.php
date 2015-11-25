@@ -101,7 +101,8 @@ class EmojiController implements EmojiInterface
 
             $save = $this->dataName->save();
             if ( $save )
-                $app->halt(200, json_encode(['Message' => 'Success']));
+                return $save;
+                // $app->halt(200, json_encode(['Message' => 'Success']));
         } catch ( ExpiredException $e ){
             $app->halt(401, json_encode(['Message' => 'Not Authorized']));
         } catch ( SaveUserExistException $e ){
