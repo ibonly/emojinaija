@@ -93,7 +93,7 @@ class EmojiController implements EmojiInterface
             $this->dataName->id = NULL;
             $this->dataName->name = $app->request->params('name');
             $this->dataName->char = $app->request->params('char');
-            $this->dataName->Keywords = $app->request->params('keywords');
+            $this->dataName->keywords = $app->request->params('keywords');
             $this->dataName->category = $app->request->params('category');
             $this->dataName->date_created = date('Y-m-d G:i:s');
             $this->dataName->date_modified = date('Y-m-d G:i:s');
@@ -101,8 +101,7 @@ class EmojiController implements EmojiInterface
 
             $save = $this->dataName->save();
             if ( $save )
-                return $save;
-                // $app->halt(200, json_encode(['Message' => 'Success']));
+                $app->halt(200, json_encode(['Message' => 'Success']));
         } catch ( ExpiredException $e ){
             $app->halt(401, json_encode(['Message' => 'Not Authorized']));
         } catch ( SaveUserExistException $e ){
