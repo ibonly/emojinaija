@@ -1,4 +1,5 @@
 <?php
+
 /**
  * AuthController manages the authentication i.e generation of token
  *
@@ -14,9 +15,10 @@ use Slim\Slim;
 use Dotenv\Dotenv;
 use Firebase\JWT\JWT;
 use Ibonly\NaijaEmoji\User;
+use Ibonly\NaijaEmoji\AuthInterface;
 use Ibonly\NaijaEmoji\InvalidTokenException;
 
-class AuthController
+class AuthController implements AuthInterface
 {
     protected $key;
     protected $userID;

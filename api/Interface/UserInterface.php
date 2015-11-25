@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Defining Interface for class UserInterface.
  *

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * UserController Managers user activity login, register and logout
  *

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Emojinaija is a rest API service that provide access to
  * unlimited emoji images

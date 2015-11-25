@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Exception for no records in database
  *
