@@ -45,8 +45,12 @@ class EmojiController implements EmojiInterface
         try
         {
             $data = $this->dataName->getAll()->all();
-            if( ! empty( $data ) )
-                return $data;
+            $newData = json_decode($data);
+            foreach ($newData as $key) {
+                $key->keywords = explode(", ", $key->keywords);
+            }
+            return json_encode($newData);
+
         } catch ( EmptyDatabaseException $e ) {
             $app->halt(204, json_encode(['Message' => 'No content']));
         }
@@ -66,8 +70,11 @@ class EmojiController implements EmojiInterface
         try
         {
             $data =  $this->dataName->where(['id' => $id])->all();
-            if( ! empty( $data ) )
-                return $data;
+            $newData = json_decode($data);
+            foreach ($newData as $key) {
+                $key->keywords = explode(", ", $key->keywords);
+            }
+            return json_encode($newData);
         } catch ( UserNotFoundException $e ) {
             $app->halt(404, json_encode(['Message' => 'Not Found']));
         }
