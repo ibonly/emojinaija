@@ -1,0 +1,44 @@
+{
+  "name": "emojinaija",
+  "description": "Potato-ORM is a package that manages the CRUD operation of database. Potato-ORM currently supports MYSQL, POSTGRES and SQLITE Database.",
+  "scripts": {
+  },
+  "env": {
+    "APP_DEBUG": {
+      "required": true
+    },
+    "APP_ENV": {
+      "required": true
+    },
+    "AUTH_URL": {
+      "required": true
+    },
+    "DATABASE_DRIVER": {
+      "required": true
+    },
+    "DATABASE_HOST": {
+      "required": true
+    },
+    "DATABASE_NAME": {
+      "required": true
+    },
+    "DATABASE_PASSWORD": {
+      "required": true
+    },
+    "DATABASE_PORT": {
+      "required": true
+    },
+    "DATABASE_USER": {
+      "required": true
+    },
+    "ISSUE_KEY": {
+      "required": true
+    },
+    "ISSUED_BY": {
+      "required": true
+    }
+  },
+  "addons": [
+    "heroku-postgresql"
+  ]
+}
