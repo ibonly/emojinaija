@@ -26,7 +26,7 @@ class EmojiController implements EmojiInterface
     protected $dataName;
     protected $auth;
 
-    public function __construct()
+    public function __construct ()
     {
         $this->dataName = new Emoji();
         $this->auth = new AuthController();
@@ -46,11 +46,10 @@ class EmojiController implements EmojiInterface
         {
             $data = $this->dataName->getAll()->all();
             $newData = json_decode($data);
-            foreach ($newData as $key) {
+            foreach ( $newData as $key ) {
                 $key->keywords = explode(", ", $key->keywords);
             }
             return json_encode($newData);
-
         } catch ( EmptyDatabaseException $e ) {
             $app->halt(204, json_encode(['Message' => 'No content']));
         }
@@ -71,7 +70,7 @@ class EmojiController implements EmojiInterface
         {
             $data =  $this->dataName->where(['id' => $id])->all();
             $newData = json_decode($data);
-            foreach ($newData as $key) {
+            foreach ( $newData as $key ) {
                 $key->keywords = explode(", ", $key->keywords);
             }
             return json_encode($newData);
@@ -134,7 +133,7 @@ class EmojiController implements EmojiInterface
         $tokenData = $app->request->headers->get('Authorization');
         try
         {
-            if ( ! isset( $tokenData ) )
+            if ( ! isset($tokenData) )
                 throw new ProvideTokenException();
 
             $find = Emoji::find($id);
@@ -175,7 +174,7 @@ class EmojiController implements EmojiInterface
         $tokenData = $app->request->headers->get('Authorization');
         try
         {
-            if ( ! isset( $tokenData ) )
+            if ( ! isset($tokenData) )
                 throw new ProvideTokenException();
 
             $this->auth->authorizationDecode($tokenData);
