@@ -69,7 +69,6 @@ RESPONSE MESSAGE: If emoji with id of 1 exist:
     [
         {
           "id": 1,
-          "user_id": 1,
           "name": "lips",
           "char": "�"
           "keyword": [
@@ -80,7 +79,8 @@ RESPONSE MESSAGE: If emoji with id of 1 exist:
           ],
           "category": "human",
           "date_created": "2015-11-19 22:37:08",
-          "date_modified": "2015-10-19 22:37:08"
+          "date_modified": "2015-10-19 22:37:08",
+          "created_by": "foo"
         }
     ]
 ```
@@ -117,7 +117,7 @@ RESPONSE MESSAGE: Get all emoji:
             "category": "Peoples",
             "date_created": "2015-11-25 09:30:19",
             "date_modified": "2015-11-25 09:35:00",
-            "created_by": "ibonly"
+            "created_by": "foo"
           },
           {
             "id": 4,
@@ -131,7 +131,7 @@ RESPONSE MESSAGE: Get all emoji:
             "category": "human",
             "date_created": "2015-11-26 09:09:46",
             "date_modified": "2015-11-26 09:09:46",
-            "created_by": "ibro"
+            "created_by": "foo"
           },
           {
             "id": 5,
@@ -144,7 +144,7 @@ RESPONSE MESSAGE: Get all emoji:
             "category": "Human",
             "date_created": "2015-11-26 15:32:19",
             "date_modified": "2015-11-26 15:32:19",
-            "created_by": "ibro"
+            "created_by": "foo"
         }
     ]
 ```
@@ -247,9 +247,8 @@ RESPONSE MESSAGE:
     BODY:
     {
       "id": 9,
-      "user_id": 11,
-      "emoji_name": "Horse",
-      "emoji_char": "👹",
+      "name": "Horse",
+      "char" : "🐎"
       "keyword": [
         "Animal",
         "Horse",
@@ -259,6 +258,7 @@ RESPONSE MESSAGE:
       "category": "Animal",
       "date_created": "2015-11-26 15:32:19",
       "date_modified": "2015-11-26 15:32:19",
+      "created_by": "foo"
     }
 ```
 
@@ -283,11 +283,11 @@ RESPONSE MESSAGE:
     HEADER: {"status": 200}
     BODY:
     {
-      "Message"'" => "'"Emoji Updated Successfully"'"
+      "Message" => "Emoji Updated Successfully"
     }
 ```
 
-* Deletion of emojis
+* Delete an emojis
 
 REQUEST:
 ```bash
