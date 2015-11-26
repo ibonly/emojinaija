@@ -8,6 +8,304 @@
 [![Test Coverage](https://codeclimate.com/github/andela-iadeniyi/emojinaija/badges/coverage.svg)](https://codeclimate.com/github/andela-iadeniyi/emojinaija/coverage)
 
 
+Emojinaija is a restful API service that provide access for emoji management. Just link to the [emojinaija](https://emojinaija.herokuapp.com/).
+
+## Installation
+
+[PHP](https://php.net) 5.5+ and [Composer](https://getcomposer.org) are required.
+
+Via Composer
+
+$ composer require ibonly/naija-emoji
+```
+
+``` bash
+$ composer install
+```
+
+## Usage
+
+### API ENDPOINT
+```
+        EndPoint                        Public Access
+    POST /auth/Login                        TRUE
+    GET /auth/Logout                        FALSE
+    POST /emojis                            FALSE
+    GET /emojis/                            TRUE
+    GET /emojis/{id}                        TRUE
+    POST /emojis/{id}                       FALSE
+    PATCH /emojis/{id}                      FALSE
+    PUT /emojis/{id}                        FALSE
+    DELETE /emojis/{id}                      FALSE
+```
+
+### API FUNCTIONALITY
+```
+        EndPoint                            Functionality
+    POST /auth/login                   Logs a user in
+    GET /auth/logout                   Logs a user out
+    GET /emojis                        List all the created emojis.
+    GET /emojis/{id}                   Gets a single emoji
+    POST /emojis                       Create a new emoji
+    PUT /emojis/{id}                   Updates an emoji
+    PATCH /emojis/{id}                 Partially updates an emoji
+    DELETE /emojis/{id}                Deletes a single emoji
+```
+
+
+## Methods accessible to the public
+
+####Single emoji retrieval
+
+REQUEST:
+``` bash
+    GET https://emojinaija.herokuapp.com/emoji/1
+    HEADER: {"Content-Type": "application/json"}
+```
+RESPONSE MESSAGE: If emoji with id of 1 exist:
+``` bash
+    HEADER: {"status": 200}
+    BODY:
+    [
+        {
+          "id": 1,
+          "user_id": 1,
+          "name": "lips",
+          "char": "�"
+          "keyword": [
+            "lips",
+            "parts",
+            "body",
+            "kiss"
+          ],
+          "category": "human",
+          "date_created": "2015-11-19 22:37:08",
+          "date_modified": "2015-10-19 22:37:08"
+        }
+    ]
+```
+RESPONSE MESSAGE: If emoji of id 1 is not found
+``` bash
+    HEADER: {"status": 404}
+    BODY:
+    {
+      "message": "Not Found"
+    }
+```
+
+* Retrieve all emoji
+
+REQUEST:
+``` bash
+    HEADER: GET https://emojinaija.herokuapp.com/emojis
+    HEADER: {"Content-Type": "application/json"}
+```
+RESPONSE MESSAGE: Get all emoji:
+``` php
+    HEADER: {"status": 200}
+    BODY: If there are saved resources
+    [
+        {
+            "id": 3,
+            "name": "Olopa",
+            "char": "👮",
+            "keywords": [
+              "man",
+              "police",
+              "human"
+            ],
+            "category": "Peoples",
+            "date_created": "2015-11-25 09:30:19",
+            "date_modified": "2015-11-25 09:35:00",
+            "created_by": "ibonly"
+          },
+          {
+            "id": 4,
+            "name": "nose",
+            "char": "👃",
+            "keywords": [
+              "human parts",
+              "nose",
+              "body"
+            ],
+            "category": "human",
+            "date_created": "2015-11-26 09:09:46",
+            "date_modified": "2015-11-26 09:09:46",
+            "created_by": "ibro"
+          },
+          {
+            "id": 5,
+            "name": "Prof",
+            "char": "👴",
+            "keywords": [
+              "Human",
+              "People"
+            ],
+            "category": "Human",
+            "date_created": "2015-11-26 15:32:19",
+            "date_modified": "2015-11-26 15:32:19",
+            "created_by": "ibro"
+        }
+    ]
+```
+RESPONSE MESSAGE: If no emoji found:
+``` bash
+    HEADER: {"status": 404}
+    BODY:
+    {
+      "message": "Not Found"
+    }
+```
+## In order to access private method, registration is required and the user will be generated for the registered user when logged in. The token generated will be used to access private API.
+
+* Registration
+
+REQUEST:
+``` bash
+    POST https://emojinaija.herokuapp.com/register
+    HEADER: {"Content-Type": "application/json"}
+    BODY:
+    {
+      "username": your_preferred_username,
+      "password": your_preferred_password
+    }
+```
+RESPONSE MESSAGE:
+``` bash
+    HEADER: {"status": 200}
+    BODY:
+    {
+      "username": "ogeni",
+      "message": "Registration Successful. Please Login to generate your token"
+    }
+```
+
+* Login authentication
+
+REQUEST:
+``` bash
+    POST https://emojinaija.herokuapp.com/auth/login
+    HEADER: {"Content-Type": "application/json"}
+    BODY:
+    {
+      "username": your_username,
+      "password": your_password
+    }
+```
+RESPONSE MESSAGE:
+``` bash
+    HEADER: {"status": 200}
+    BODY:
+    {
+      "username": "user",
+      "Authorization": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9eyJpc3"
+    }
+```
+
+* Logout
+
+REQUEST:
+``` bash
+    GET https://emojinaija.herokuapp.com/auth/logout
+    HEADER:
+    {
+      "Content-Type": "application/json",
+      "Authorization": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9eyJpc3"
+    }
+```
+RESPONSE MESSAGE:
+``` bash
+    HEADER: {"status": 200}
+    BODY:
+    {
+      "message": "Logged out Successfully"
+    }
+```
+
+* Creating new emoji
+
+REQUEST:
+``` bash
+    POST https://emojinaija.herokuapp.com/emojis
+    HEADER:
+    {
+      "Content-Type": "application/json",
+      "Authorization": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9eyJpc3"
+    }
+
+    BODY:
+    {
+      "name": "Horse",
+      "char" : "🐎"
+      "keyword": "Animal, Horse, Farm, Esin",
+      "category": "Animal"
+    }
+```
+RESPONSE MESSAGE:
+```bash
+    HEADER: {"status": 200}
+    BODY:
+    {
+      "id": 9,
+      "user_id": 11,
+      "emoji_name": "Horse",
+      "emoji_char": "👹",
+      "keyword": [
+        "Animal",
+        "Horse",
+        "Farm",
+        "Esin"
+      ],
+      "category": "Animal",
+      "date_created": "2015-11-26 15:32:19",
+      "date_modified": "2015-11-26 15:32:19",
+    }
+```
+
+* Updating emojis
+
+REQUEST:
+``` bash
+    PUT https://emojinaija.herokuapp.com/emojis/9
+    PATCH https://emojinaija.herokuapp.com/emojis/9
+    HEADER:
+    {
+      "Content-Type": "application/json",
+      "Authorization": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9eyJpc3"
+    }
+    BODY:
+    {
+          "keyword": "Animal, Horse, Farm, Esin, Zoo",
+    }
+```
+RESPONSE MESSAGE:
+```bash
+    HEADER: {"status": 200}
+    BODY:
+    {
+      "Message"'" => "'"Emoji Updated Successfully"'"
+    }
+```
+
+* Deletion of emojis
+
+REQUEST:
+```bash
+    DELETE https://emojinaija.herokuapp.com/emojis/9
+    HEADER:
+    {
+      "Content-Type": "application/json",
+      "Authorization": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9eyJpc3"
+    }
+```
+RESPONSE MESSAGE:
+``` bash
+    HEADER: {"status": 200}
+    BODY:
+    {
+      "Message" => "Emoji Deleted"
+    }
+```
 
 ## Testing
 
@@ -22,4 +320,4 @@ Please check out [CONTRIBUTING](CONTRIBUTING.md) file for detailed contribution 
 
 ## Credits
 
-Fmojinaija is created and maintained by `Ibraheem ADENIYI`.
+Emojinaija is created and maintained by `Ibraheem ADENIYI`.

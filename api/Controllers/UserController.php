@@ -41,13 +41,13 @@ class UserController implements UserInterface
         $username = $app->request->params('username');
         $this->user->id = NULL;
         $this->user->username = $username;
-        $this->user->password = $app->request->params('password');
+        $this->user->password = md5($app->request->params('password'));
         $this->user->date_created = date('Y-m-d H:i:s');
 
         $save = $this->user->save();
         if( $save == 1 )
         {
-            $app->halt(201, json_encode(['message' => 'Created']));
+            $app->halt(201, json_encode(['message' => 'Registration Successful. Please Login to generate your token']));
         }
     }
 
@@ -65,7 +65,7 @@ class UserController implements UserInterface
         $password = $app->request->params('password');
         try
         {
-            $login = $this->user->where(['username' => $username, 'password' => $password], 'AND')->all();
+            $login = $this->user->where(['username' => $username, 'password' => md5($password)], 'AND')->all();
             if( ! empty ($login) ){
                 $output = json_decode($login);
                 foreach ($output as $key) {

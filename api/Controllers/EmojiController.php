@@ -178,7 +178,9 @@ class EmojiController implements EmojiInterface
                 throw new ProvideTokenException();
 
             $this->auth->authorizationDecode($tokenData);
-            return $this->dataName->destroy($id);
+            $deleted = $this->dataName->destroy($id);
+            if ( $deleted )
+                $app->halt(200, json_encode(['Message' => 'Emoji Deleted']));
         } catch ( ExpiredException $e ){
             $app->halt(401, json_encode(['Message' => 'Not Authorized']));
         } catch ( InvalidTokenException $e ){
