@@ -154,7 +154,7 @@ RESPONSE MESSAGE: If no emoji found:
       "message": "Not Found"
     }
 ```
-* In order to access private method, registration is required and the user will be generated for the registered user when logged in. The token generated will be used to access private API.
+* In order to access private methods, Registration is required and a token will be generated for the registered user when logged in. The token generated will be used to access private API.
 
 * Registration
 
