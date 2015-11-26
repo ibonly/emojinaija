@@ -16,10 +16,8 @@ Emojinaija is a restful API service that provide access for emoji management. Ju
 
 Via Composer
 
-$ composer require ibonly/naija-emoji
-```
-
 ``` bash
+$ composer require ibonly/naija-emoji
 $ composer install
 ```
 
@@ -156,7 +154,7 @@ RESPONSE MESSAGE: If no emoji found:
       "message": "Not Found"
     }
 ```
-## In order to access private method, registration is required and the user will be generated for the registered user when logged in. The token generated will be used to access private API.
+* In order to access private method, registration is required and the user will be generated for the registered user when logged in. The token generated will be used to access private API.
 
 * Registration
 
