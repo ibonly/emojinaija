@@ -69,7 +69,7 @@ class UserController implements UserInterface
             if( ! empty ($login) ){
                 $output = json_decode($login);
                 foreach ($output as $key) {
-                    $output = $key->username;
+                    $output = $key->id;
                 }
                 return(json_encode([
                     'Username' => $username,

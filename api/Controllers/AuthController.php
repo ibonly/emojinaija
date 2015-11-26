@@ -64,19 +64,19 @@ class AuthController implements AuthInterface
     }
 
     /**
-     * authorizationEncode Generate token using $username
+     * authorizationEncode Generate token using $userID
      *
-     * @param  $username
+     * @param  $userID
      *
      * @return string
      */
-    public function authorizationEncode ($username)
+    public function authorizationEncode ($userID)
     {
-        if ( ! is_null($username) )
+        if ( ! is_null($userID) )
             $token = array(
                 "iss" => $this->getIssuedBy(),
                 "aud" => $this->getAuthUrl(),
-                "user" => $username,
+                "user" => $userID,
                 "exp" => time() + 3600
             );
             return JWT::encode($token, $this->getKey());
