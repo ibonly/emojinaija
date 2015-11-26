@@ -101,12 +101,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/andela-iadeniyi/Potato-ORM.git",
-                "reference": "17a1c6b5ec4b4415b6c1f508c18c1577c6e8c483"
+                "reference": "ae51f29617b6477c09b46dd33bf1b044709970d0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/andela-iadeniyi/Potato-ORM/zipball/17a1c6b5ec4b4415b6c1f508c18c1577c6e8c483",
-                "reference": "17a1c6b5ec4b4415b6c1f508c18c1577c6e8c483",
+                "url": "https://api.github.com/repos/andela-iadeniyi/Potato-ORM/zipball/ae51f29617b6477c09b46dd33bf1b044709970d0",
+                "reference": "ae51f29617b6477c09b46dd33bf1b044709970d0",
                 "shasum": ""
             },
             "require": {
@@ -134,7 +134,7 @@
                     "email": "ibonly01@gmail.com"
                 }
             ],
-            "time": "2015-11-25 08:22:52"
+            "time": "2015-11-25 08:31:14"
         },
         {
             "name": "mockery/mockery",
