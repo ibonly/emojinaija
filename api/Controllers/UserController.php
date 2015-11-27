@@ -14,7 +14,7 @@ use Slim\Slim;
 use Ibonly\NaijaEmoji\User;
 use Ibonly\NaijaEmoji\UserInterface;
 use Ibonly\NaijaEmoji\AuthController;
-use Ibonly\PotatoORM\UserNotFoundException;
+use Ibonly\PotatoORM\DataNotFoundException;
 use Ibonly\NaijaEmoji\InvalidTokenException;
 use Ibonly\NaijaEmoji\ProvideTokenException;
 
@@ -45,7 +45,7 @@ class UserController implements UserInterface
         $this->user->date_created = date('Y-m-d H:i:s');
 
         $save = $this->user->save();
-        if( $save == 1 )
+        if( $save )
         {
             $app->halt(201, json_encode(['message' => 'Registration Successful. Please Login to generate your token']));
         }
@@ -65,7 +65,7 @@ class UserController implements UserInterface
         $password = $app->request->params('password');
         try
         {
-            $login = $this->user->where(['username' => $username, 'password' => md5($password)], 'AND')->all();
+            $login = $this->user->where(['username' => $username, 'password' => md5($password)], 'AND')->toJson();
             if( ! empty ($login) ){
                 $output = json_decode($login);
                 foreach ($output as $key) {
@@ -76,7 +76,7 @@ class UserController implements UserInterface
                     'Authorization' => $this->auth->authorizationEncode($username)
                 ]));
             }
-        } catch ( UserNotFoundException $e) {
+        } catch ( DataNotFoundException $e) {
             $app->halt(404, json_encode(['message' => 'Not Found']));
         }
     }
@@ -97,12 +97,12 @@ class UserController implements UserInterface
             if ( ! isset( $tokenData ) )
                 throw new ProvideTokenException();
 
-            $checkUser = $this->user->where(['username' => $tokenData->user])->all();
+            $checkUser = $this->user->where(['username' => $tokenData->user])->toJson();
             if( ! empty ($checkUser) ){
-                $this->auth->authorizationEncode(NULL);
+                $this->auth->authorizationEncode(NULL);#
                 $app->halt(200, json_encode(['message' => 'Logged out Successfully']));
             }
-        } catch ( UserNotFoundException $e) {
+        } catch ( DataNotFoundException $e) {
             $app->halt(404, json_encode(['message' => 'Not Found']));
         } catch ( InvalidTokenException $e ){
             $app->halt(405, json_encode(['Message' => 'Invalid Token']));
