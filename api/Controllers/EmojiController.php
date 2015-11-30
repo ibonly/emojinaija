@@ -16,10 +16,11 @@ use Ibonly\NaijaEmoji\Emoji;
 use Firebase\JWT\ExpiredException;
 use Ibonly\NaijaEmoji\EmojiInterface;
 use Ibonly\NaijaEmoji\AuthController;
-use Ibonly\PotatoORM\UserNotFoundException;
+use Ibonly\PotatoORM\DataNotFoundException;
 use Ibonly\PotatoORM\EmptyDatabaseException;
 use Ibonly\NaijaEmoji\ProvideTokenException;
 use Ibonly\NaijaEmoji\InvalidTokenException;
+use Ibonly\PotatoORM\DataAlreadyExistException;
 
 class EmojiController implements EmojiInterface
 {
@@ -44,7 +45,7 @@ class EmojiController implements EmojiInterface
         $app->response->headers->set('Content-Type', 'application/json');
         try
         {
-            $data = $this->dataName->getAll()->all();
+            $data = $this->dataName->getAll()->toJson();
             $newData = json_decode($data);
             foreach ( $newData as $key ) {
                 $key->keywords = explode(", ", $key->keywords);
@@ -68,13 +69,13 @@ class EmojiController implements EmojiInterface
         $app->response->headers->set('Content-Type', 'application/json');
         try
         {
-            $data =  $this->dataName->where(['id' => $id])->all();
+            $data =  $this->dataName->where(['id' => $id])->toJson();
             $newData = json_decode($data);
             foreach ( $newData as $key ) {
                 $key->keywords = explode(", ", $key->keywords);
             }
             return json_encode($newData);
-        } catch ( UserNotFoundException $e ) {
+        } catch ( DataNotFoundException $e ) {
             $app->halt(404, json_encode(['Message' => 'Not Found']));
         }
     }
@@ -109,8 +110,8 @@ class EmojiController implements EmojiInterface
             if ( $save )
                 $app->halt(200, json_encode(['Message' => 'Success']));
         } catch ( ExpiredException $e ){
-            $app->halt(401, json_encode(['Message' => 'Not Authorized']));
-        } catch ( SaveUserExistException $e ){
+            $app->halt(401, json_encode(['Message' => 'Token has expired']));
+        } catch ( DataAlreadyExistException $e ){
             $app->halt(202, json_encode(['Message' => 'Not Created']));
         } catch ( InvalidTokenException $e ){
             $app->halt(405, json_encode(['Message' => 'Invalid Token']));
@@ -148,10 +149,10 @@ class EmojiController implements EmojiInterface
             if( $update )
                 $app->halt(200, json_encode(['Message' => 'Emoji Updated Successfully']));
         } catch ( ExpiredException $e ){
-            $app->halt(401, json_encode(['Message' => 'Not Authorized']));
-        } catch ( SaveUserExistException $e ){
+            $app->halt(401, json_encode(['Message' => 'Token has expired']));
+        } catch ( DataAlreadyExistException $e ){
             $app->halt(304, json_encode(['Message' => 'Not Modified']));
-        } catch ( UserNotFoundException $e ){
+        } catch ( DataNotFoundException $e ){
             $app->halt(304, json_encode(['Message' => 'Invalid Credential supplied']));
         } catch ( InvalidTokenException $e ){
             $app->halt(405, json_encode(['Message' => 'Invalid Token']));
@@ -182,7 +183,7 @@ class EmojiController implements EmojiInterface
             if ( $deleted )
                 $app->halt(200, json_encode(['Message' => 'Emoji Deleted']));
         } catch ( ExpiredException $e ){
-            $app->halt(401, json_encode(['Message' => 'Not Authorized']));
+            $app->halt(401, json_encode(['Message' => 'Token has expired']));
         } catch ( InvalidTokenException $e ){
             $app->halt(405, json_encode(['Message' => 'Invalid Token']));
         } catch ( ProvideTokenException $e ){

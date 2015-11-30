@@ -100,6 +100,9 @@ class AuthController implements AuthInterface
 
     }
 
+    /**
+     * Load .env data
+     */
     protected function loadEnv ()
     {
         if( ! getenv("APP_ENV" !== "production"))
