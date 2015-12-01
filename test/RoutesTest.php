@@ -8,7 +8,7 @@ use Guzzle\Http\Exception\ClientErrorResponseException;
 
 class RoutesTest extends PHPUnit_Framework_TestCase
 {
-    public function setUp()
+    public function setUp ()
     {
         $this->client = new Client('https://emojinaija.herokuapp.com');
         $this->request = $this->client->get('/emojis');
@@ -18,7 +18,7 @@ class RoutesTest extends PHPUnit_Framework_TestCase
     /**
      * Test the URL
      */
-    public function testURL()
+    public function testURL ()
     {
         $this->assertEquals("https://emojinaija.herokuapp.com/emojis", $this->request->getUrl());
     }
@@ -26,7 +26,7 @@ class RoutesTest extends PHPUnit_Framework_TestCase
     /**
      * Test if the ouput of getAll is an object
      */
-    public function testGetAllEmoji()
+    public function testGetAllEmoji ()
     {
         $this->assertInternalType("object", $this->response->getBody());
         $this->assertEquals(200, $this->response->getStatusCode());
@@ -37,7 +37,6 @@ class RoutesTest extends PHPUnit_Framework_TestCase
      */
     public function testGetSingleEmoji()
     {
-        $endpoint = $this->client->get('emogis/5');
         $this->assertEquals(200, $this->response->getStatusCode());
     }
 

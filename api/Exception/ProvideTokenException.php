@@ -14,7 +14,7 @@ use Exception;
 
 class ProvideTokenException extends Exception
 {
-    public function __construct()
+    public function __construct ()
     {
         parent::__construct("Enter your Token");
     }
@@ -24,7 +24,7 @@ class ProvideTokenException extends Exception
      *
      * @return string
      */
-    public function errorMessage()
+    public function errorMessage ()
     {
         return json_encode(['status' => '401', 'Message' => $this->getMessage()]);
     }

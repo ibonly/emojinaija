@@ -109,13 +109,13 @@ class EmojiController implements EmojiInterface
             $save = $this->dataName->save();
             if ( $save )
                 $app->halt(200, json_encode(['Message' => 'Success']));
-        } catch ( ExpiredException $e ){
+        } catch ( ExpiredException $e ) {
             $app->halt(401, json_encode(['Message' => 'Token has expired']));
-        } catch ( DataAlreadyExistException $e ){
+        } catch ( DataAlreadyExistException $e ) {
             $app->halt(202, json_encode(['Message' => 'Not Created']));
-        } catch ( InvalidTokenException $e ){
+        } catch ( InvalidTokenException $e ) {
             $app->halt(405, json_encode(['Message' => 'Invalid Token']));
-        } catch ( ProvideTokenException $e ){
+        } catch ( ProvideTokenException $e ) {
             $app->halt(406, json_encode(['Message' => 'Enter a valid Token']));
         }
     }
@@ -148,15 +148,15 @@ class EmojiController implements EmojiInterface
             $update = $find->update();
             if( $update )
                 $app->halt(200, json_encode(['Message' => 'Emoji Updated Successfully']));
-        } catch ( ExpiredException $e ){
+        } catch ( ExpiredException $e ) {
             $app->halt(401, json_encode(['Message' => 'Token has expired']));
-        } catch ( DataAlreadyExistException $e ){
+        } catch ( DataAlreadyExistException $e ) {
             $app->halt(304, json_encode(['Message' => 'Not Modified']));
-        } catch ( DataNotFoundException $e ){
+        } catch ( DataNotFoundException $e ) {
             $app->halt(304, json_encode(['Message' => 'Invalid Credential supplied']));
-        } catch ( InvalidTokenException $e ){
+        } catch ( InvalidTokenException $e ) {
             $app->halt(405, json_encode(['Message' => 'Invalid Token']));
-        } catch ( ProvideTokenException $e ){
+        } catch ( ProvideTokenException $e ) {
             $app->halt(406, json_encode(['Message' => 'Enter a valid Token']));
         }
     }
@@ -182,11 +182,11 @@ class EmojiController implements EmojiInterface
             $deleted = $this->dataName->destroy($id);
             if ( $deleted )
                 $app->halt(200, json_encode(['Message' => 'Emoji Deleted']));
-        } catch ( ExpiredException $e ){
+        } catch ( ExpiredException $e ) {
             $app->halt(401, json_encode(['Message' => 'Token has expired']));
-        } catch ( InvalidTokenException $e ){
+        } catch ( InvalidTokenException $e ) {
             $app->halt(405, json_encode(['Message' => 'Invalid Token']));
-        } catch ( ProvideTokenException $e ){
+        } catch ( ProvideTokenException $e ) {
             $app->halt(406, json_encode(['Message' => 'Enter a valid Token']));
         }
     }

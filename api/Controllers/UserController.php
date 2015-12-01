@@ -23,7 +23,7 @@ class UserController implements UserInterface
     protected $user;
     protected $auth;
 
-    public function __construct()
+    public function __construct ()
     {
         $this->user = new User();
         $this->auth = new AuthController();
@@ -41,7 +41,7 @@ class UserController implements UserInterface
         $username = $app->request->params('username');
         $this->user->id = NULL;
         $this->user->username = $username;
-        $this->user->password = md5($app->request->params('password'));
+        $this->user->password = $this->auth->passwordEncrypt($app->request->params('password'));
         $this->user->date_created = date('Y-m-d H:i:s');
 
         $save = $this->user->save();
@@ -65,7 +65,7 @@ class UserController implements UserInterface
         $password = $app->request->params('password');
         try
         {
-            $login = $this->user->where(['username' => $username, 'password' => md5($password)], 'AND')->toJson();
+            $login = $this->user->where(['username' => $username, 'password' => $this->auth->passwordEncrypt($password)], 'AND')->toJson();
             if( ! empty ($login) ){
                 $output = json_decode($login);
                 foreach ($output as $key) {
@@ -104,9 +104,9 @@ class UserController implements UserInterface
             }
         } catch ( DataNotFoundException $e) {
             $app->halt(404, json_encode(['message' => 'Not Found']));
-        } catch ( InvalidTokenException $e ){
+        } catch ( InvalidTokenException $e ) {
             $app->halt(405, json_encode(['Message' => 'Invalid Token']));
-        } catch ( ProvideTokenException $e ){
+        } catch ( ProvideTokenException $e ) {
             $app->halt(406, json_encode(['Message' => 'Enter a valid Token']));
         }
     }

@@ -48,7 +48,7 @@ class AuthController implements AuthInterface
      *
      * @return string
      */
-    public function getIssuedBy()
+    public function getIssuedBy ()
     {
         return $this->issued_by;
     }
@@ -58,7 +58,7 @@ class AuthController implements AuthInterface
      *
      * @return string
      */
-    public function getAuthUrl()
+    public function getAuthUrl ()
     {
         return $this->auth_url;
     }
@@ -97,7 +97,15 @@ class AuthController implements AuthInterface
         } catch ( Exception $e) {
             throw new InvalidTokenException();
         }
+    }
 
+    public function passwordEncrypt ($password)
+    {
+        $options = [
+            'cost' => 11,
+            'salt' => mcrypt_create_iv(22, MCRYPT_DEV_URANDOM),
+        ];
+        return password_hash($password, PASSWORD_BCRYPT, $options);
     }
 
     /**
