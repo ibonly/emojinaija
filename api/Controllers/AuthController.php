@@ -99,6 +99,13 @@ class AuthController implements AuthInterface
         }
     }
 
+    /**
+     * Encrypt user password
+     *
+     * @param  $password
+     *
+     * @return string
+     */
     public function passwordEncrypt ($password)
     {
         $options = [
@@ -106,6 +113,22 @@ class AuthController implements AuthInterface
             'salt' => mcrypt_create_iv(22, MCRYPT_DEV_URANDOM),
         ];
         return password_hash($password, PASSWORD_BCRYPT, $options);
+    }
+
+    /**
+     * Decrypt user password
+     *
+     * @param  $password
+     *
+     * @return bool
+     */
+    public function passwordDecrypt($password, $hashPassword)
+    {
+        if( password_verify($password, $hashPassword) )
+        {
+            return true;
+        }
+        throw new PasswordException();
     }
 
     /**

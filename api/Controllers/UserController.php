@@ -17,6 +17,7 @@ use Ibonly\NaijaEmoji\AuthController;
 use Ibonly\PotatoORM\DataNotFoundException;
 use Ibonly\NaijaEmoji\InvalidTokenException;
 use Ibonly\NaijaEmoji\ProvideTokenException;
+use Ibonly\NaijaEmoji\PasswordExistException;
 use Ibonly\PotatoORM\DataAlreadyExistException;
 
 class UserController implements UserInterface
@@ -70,19 +71,26 @@ class UserController implements UserInterface
         $password = $app->request->params('password');
         try
         {
-            $login = $this->user->where(['username' => $username, 'password' => $this->auth->passwordEncrypt($password)], 'AND')->toJson();
+            //check if username is available
+            $login = $this->user->where(['username' => $username])->toJson();
             if( ! empty ($login) ){
+                $hashPassword = "";
                 $output = json_decode($login);
                 foreach ($output as $key) {
                     $output = $key->id;
+                    $hashPassword = $key->password;
                 }
-                return(json_encode([
-                    'Username' => $username,
-                    'Authorization' => $this->auth->authorizationEncode($username)
-                ]));
+                //confirm the password
+                if( $this->auth->passwordDecrypt($password, $hashPassword) )
+                    return(json_encode([
+                        'Username' => $username,
+                        'Authorization' => $this->auth->authorizationEncode($username)
+                    ]));
             }
         } catch ( DataNotFoundException $e) {
             $app->halt(404, json_encode(['message' => 'Not Found']));
+        } catch ( PasswordException $e ) {
+            return $e->errorMessage();
         }
     }
 

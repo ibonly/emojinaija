@@ -150,10 +150,8 @@ class EmojiController implements EmojiInterface
                 $app->halt(200, json_encode(['Message' => 'Emoji Updated Successfully']));
         } catch ( ExpiredException $e ) {
             $app->halt(401, json_encode(['Message' => 'Token has expired']));
-        } catch ( DataAlreadyExistException $e ) {
-            $app->halt(304, json_encode(['Message' => 'Not Modified']));
         } catch ( DataNotFoundException $e ) {
-            $app->halt(304, json_encode(['Message' => 'Invalid Credential supplied']));
+            $app->halt(303, json_encode(['Message' => 'Invalid Credential supplied']));
         } catch ( InvalidTokenException $e ) {
             $app->halt(405, json_encode(['Message' => 'Invalid Token']));
         } catch ( ProvideTokenException $e ) {
@@ -188,6 +186,8 @@ class EmojiController implements EmojiInterface
             $app->halt(405, json_encode(['Message' => 'Invalid Token']));
         } catch ( ProvideTokenException $e ) {
             $app->halt(406, json_encode(['Message' => 'Enter a valid Token']));
+        }catch ( DataNotFoundException $e ) {
+            $app->halt(401, json_encode(['Message' => 'Emoji not found']));
         }
     }
 }

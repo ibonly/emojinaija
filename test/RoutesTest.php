@@ -11,8 +11,6 @@ class RoutesTest extends PHPUnit_Framework_TestCase
     public function setUp ()
     {
         $this->client = new Client('https://emojinaija.herokuapp.com');
-        $this->request = $this->client->get('/emojis');
-        $this->response = $this->request->send();
     }
 
     /**
@@ -20,6 +18,7 @@ class RoutesTest extends PHPUnit_Framework_TestCase
      */
     public function testURL ()
     {
+        $this->request = $this->client->get('/emojis');
         $this->assertEquals("https://emojinaija.herokuapp.com/emojis", $this->request->getUrl());
     }
 
@@ -28,8 +27,10 @@ class RoutesTest extends PHPUnit_Framework_TestCase
      */
     public function testGetAllEmoji ()
     {
-        $this->assertInternalType("object", $this->response->getBody());
-        $this->assertEquals(200, $this->response->getStatusCode());
+        $request = $this->client->get('/emojis');
+        $response = $request->send();
+        $this->assertInternalType("object", $response->getBody());
+        $this->assertEquals(200, $response->getStatusCode());
     }
 
     /**
@@ -37,7 +38,9 @@ class RoutesTest extends PHPUnit_Framework_TestCase
      */
     public function testGetSingleEmoji()
     {
-        $this->assertEquals(200, $this->response->getStatusCode());
+        $request = $this->client->get('/emojis');
+        $response = $request->send();
+        $this->assertEquals(200, $response->getStatusCode());
     }
 
     /**
@@ -63,9 +66,11 @@ class RoutesTest extends PHPUnit_Framework_TestCase
      */
     public function testHeaderAuthorizationNotSet()
     {
-        $this->assertFalse(in_array('Host', array_keys($this->response->getHeaders()->toArray())
+        $request = $this->client->get('/emojis');
+        $response = $request->send();
+        $this->assertFalse(in_array('Host', array_keys($response->getHeaders()->toArray())
 ));
-        $this->assertFalse($this->response->hasHeader("Authorization"));
+        $this->assertFalse($response->hasHeader("Authorization"));
     }
 
     /**
