@@ -17,6 +17,7 @@ use Ibonly\NaijaEmoji\AuthController;
 use Ibonly\PotatoORM\DataNotFoundException;
 use Ibonly\NaijaEmoji\InvalidTokenException;
 use Ibonly\NaijaEmoji\ProvideTokenException;
+use Ibonly\PotatoORM\DataAlreadyExistException;
 
 class UserController implements UserInterface
 {
@@ -43,11 +44,15 @@ class UserController implements UserInterface
         $this->user->username = $username;
         $this->user->password = $this->auth->passwordEncrypt($app->request->params('password'));
         $this->user->date_created = date('Y-m-d H:i:s');
-
-        $save = $this->user->save();
-        if( $save )
+        try
         {
-            $app->halt(201, json_encode(['message' => 'Registration Successful. Please Login to generate your token']));
+            $save = $this->user->save();
+            if( $save )
+            {
+                $app->halt(201, json_encode(['message' => 'Registration Successful. Please Login to generate your token']));
+            }
+        } catch (DataAlreadyExistException $e) {
+            $app->halt(404, json_encode(['message' => 'User details already exist']));
         }
     }
 
