@@ -26,6 +26,7 @@ class RoutesTest extends PHPUnit_Framework_TestCase
     public function setUp ()
     {
         $this->client = new Client();
+        $this->emoji = new Emoji;
     }
 
     /**
@@ -43,6 +44,7 @@ class RoutesTest extends PHPUnit_Framework_TestCase
      */
     public function testGetAllEmoji ()
     {
+        $data =  $this->emoji->where(['name' => 'TestEmojiName'])->toJson();
         $request = $this->client->request('GET', $this->url.'/emojis');
 
         $this->assertInternalType("object", $request->getBody());
