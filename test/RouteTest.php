@@ -5,8 +5,8 @@ namespace Ibonly\NaijaEmoji\Test;
 use Dotenv\Dotenv;
 use GuzzleHttp\Client;
 use Ibonly\NaijaEmoji\Emoji;
+use Ibonly\NaijaEmoji\GetEnv;
 use PHPUnit_Framework_TestCase;
-use Ibonly\NaijaEmoji\AuthController;
 use GuzzleHttp\Exception\ClientException;
 
 class RoutesTest extends PHPUnit_Framework_TestCase
@@ -17,11 +17,10 @@ class RoutesTest extends PHPUnit_Framework_TestCase
 
     public function __construct ()
     {
-        $this->emoji = new Emoji();
-        $auth = new AuthController();
+        $values = new GetEnv();
 
-        $this->token = $auth->getTestToken();
-        $this->url = $auth->getAuthUrl();
+        $this->token = $values->getTestToken();
+        $this->url = $values->getAuthUrl();
     }
 
     public function setUp ()
@@ -83,7 +82,6 @@ class RoutesTest extends PHPUnit_Framework_TestCase
      */
     public function testPostIfAuthorizationNotSet ()
     {
-        $id = $this->emoji->where(['name' => 'TestEmojiName'])->getData('id');
         $data = array(
             'name' => 'TestEmojiName',
             'char' => '🎃',
@@ -105,7 +103,7 @@ class RoutesTest extends PHPUnit_Framework_TestCase
         $data = array(
             'name' => 'TestName'
         );
-        $request = $this->client->request('PUT', $this->url.'/emojis/57',[ 'headers' => ['Authorization'=> $this->token],'form_params' => $data ]);
+        $request = $this->client->request('PUT', $this->url.'/emojis/71',[ 'headers' => ['Authorization'=> $this->token],'form_params' => $data ]);
 
         $this->assertInternalType('object' , $request);
         $this->assertEquals('200', $request->getStatusCode());
@@ -116,7 +114,7 @@ class RoutesTest extends PHPUnit_Framework_TestCase
      */
     public function testDeleteEmoji ()
     {
-        $request = $this->client->request('DELETE', $this->url.'/emojis/57', [ 'headers' => ['Authorization'=> $this->token]]);
+        $request = $this->client->request('DELETE', $this->url.'/emojis/71', [ 'headers' => ['Authorization'=> $this->token]]);
 
         $this->assertInternalType('object' , $request);
         $this->assertEquals('200', $request->getStatusCode());
