@@ -32,7 +32,7 @@ class RoutesTest extends PHPUnit_Framework_TestCase
     /**
      * testInvalidEndpoint
      */
-    public function testInvalidEndpoint()
+    public function testInvalidEndpoint ()
     {
         $this->setExpectedException("GuzzleHttp\Exception\ClientException");
 
@@ -69,7 +69,7 @@ class RoutesTest extends PHPUnit_Framework_TestCase
     public function testPOSTEmoji()
     {
         $data = array(
-            'name' => 'TestEmojiName'.time(),
+            'name' => 'TestEmojiName',
             'char' => '🎃',
             'keywords' => "apple, friut, mac",
             'category' => 'fruit'
