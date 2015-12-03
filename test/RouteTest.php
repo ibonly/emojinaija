@@ -18,6 +18,7 @@ class RoutesTest extends PHPUnit_Framework_TestCase
     public function __construct ()
     {
         $values = new GetEnv();
+        $this->emoji = new Emoji;
 
         $this->token = $values->getTestToken();
         $this->url = $values->getAuthUrl();
@@ -26,7 +27,6 @@ class RoutesTest extends PHPUnit_Framework_TestCase
     public function setUp ()
     {
         $this->client = new Client();
-        $this->emoji = new Emoji;
     }
 
     /**

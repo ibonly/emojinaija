@@ -103,6 +103,7 @@ class UserController implements UserInterface
                 'Authorization' => $this->auth->authorizationEncode($username)
             ]));
     }
+
     /**
      * logout Log user out and destroy token
      *
@@ -123,7 +124,7 @@ class UserController implements UserInterface
             if ( ! empty ($checkUser) )
                 $this->auth->authorizationEncode(NULL);#
                 $app->halt(200, json_encode(['message' => 'Logged out Successfully']));
-        } catch ( DataNotFoundException $e) {
+        } catch ( DataNotFoundException $e ) {
             $app->halt(404, json_encode(['message' => 'Not Found']));
         } catch ( InvalidTokenException $e ) {
             $app->halt(405, json_encode(['Message' => 'Invalid Token']));

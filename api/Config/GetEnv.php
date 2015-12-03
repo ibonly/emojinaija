@@ -72,8 +72,7 @@ class GetEnv implements GetEnvInterface
     {
         if ( ! getenv("APP_ENV"))
         {
-            // $dotenv = new Dotenv($_SERVER['DOCUMENT_ROOT']);
-            $dotenv = new Dotenv(__DIR__.'/../../');
+            $dotenv = new Dotenv($_SERVER['DOCUMENT_ROOT']);
             $dotenv->load();
         }
     }

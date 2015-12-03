@@ -31,10 +31,10 @@ class AuthController extends GetEnv implements AuthInterface
     {
         if ( ! is_null($userID) )
             $token = array(
-                "iss" => $this->getIssuedBy(),
-                "aud" => $this->getAuthUrl(),
+                "iss"  => $this->getIssuedBy(),
+                "aud"  => $this->getAuthUrl(),
                 "user" => $userID,
-                "exp" => time() + 3600000
+                "exp"  => time() + 3600000
             );
             return JWT::encode($token, $this->getKey());
     }
@@ -51,7 +51,7 @@ class AuthController extends GetEnv implements AuthInterface
         try
         {
             return JWT::decode($token, $this->getKey(), array('HS256'));
-        } catch ( Exception $e) {
+        } catch ( Exception $e ) {
             throw new InvalidTokenException();
         }
     }
