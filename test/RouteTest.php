@@ -103,7 +103,7 @@ class RoutesTest extends PHPUnit_Framework_TestCase
         $data = array(
             'name' => 'TestName'
         );
-        $request = $this->client->request('PUT', $this->url.'/emojis/71',[ 'headers' => ['Authorization'=> $this->token],'form_params' => $data ]);
+        $request = $this->client->request('PUT', $this->url.'/emojis/91',[ 'headers' => ['Authorization'=> $this->token],'form_params' => $data ]);
 
         $this->assertInternalType('object' , $request);
         $this->assertEquals('200', $request->getStatusCode());
@@ -114,7 +114,7 @@ class RoutesTest extends PHPUnit_Framework_TestCase
      */
     public function testDeleteEmoji ()
     {
-        $request = $this->client->request('DELETE', $this->url.'/emojis/71', [ 'headers' => ['Authorization'=> $this->token]]);
+        $request = $this->client->request('DELETE', $this->url.'/emojis/91', [ 'headers' => ['Authorization'=> $this->token]]);
 
         $this->assertInternalType('object' , $request);
         $this->assertEquals('200', $request->getStatusCode());
