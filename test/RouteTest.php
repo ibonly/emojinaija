@@ -12,7 +12,6 @@ use GuzzleHttp\Exception\ClientException;
 class RoutesTest extends PHPUnit_Framework_TestCase
 {
     protected $url;
-    protected $name;
     protected $token;
     protected $client;
 
@@ -22,7 +21,6 @@ class RoutesTest extends PHPUnit_Framework_TestCase
 
         $this->token = $values->getTestToken();
         $this->url = $values->getAuthUrl();
-        $this->emojiName = 'TestEmojiName'.time();
     }
 
     public function setUp ()
@@ -46,8 +44,6 @@ class RoutesTest extends PHPUnit_Framework_TestCase
      */
     public function testGetAllEmoji ()
     {
-        $data =  $this->emoji->where(['name' => $this->emojiName])->toJson();
-
         $request = $this->client->request('GET', $this->url.'/emojis');
 
         $this->assertInternalType("object", $request->getBody());
@@ -71,7 +67,7 @@ class RoutesTest extends PHPUnit_Framework_TestCase
     public function testPOSTEmoji()
     {
         $data = array(
-            'name' => $this->emojiName,
+            'name' => 'TestEmojiName',
             'char' => '🎃',
             'keywords' => "apple, friut, mac",
             'category' => 'fruit'
@@ -88,7 +84,7 @@ class RoutesTest extends PHPUnit_Framework_TestCase
     public function testPostIfAuthorizationNotSet ()
     {
         $data = array(
-            'name' => $this->emojiName,
+            'name' => 'TestEmojiName',
             'char' => '🎃',
             'keywords' => "apple, friut, mac",
             'category' => 'fruit'
@@ -105,10 +101,12 @@ class RoutesTest extends PHPUnit_Framework_TestCase
      */
     public function testPutPatchEmoji ()
     {
+        $id =  $this->emoji->where(['name' => 'TestEmojiName'])->getData('id');
+
         $data = array(
-            'category' => 'Fruit Flavour'
+            'category' => 'Fruit Salad'
         );
-        $request = $this->client->request('PUT', $this->url.'/emojis/91',[ 'headers' => ['Authorization'=> $this->token],'form_params' => $data ]);
+        $request = $this->client->request('PUT', $this->url.'/emojis/'.$id,[ 'headers' => ['Authorization'=> $this->token],'form_params' => $data ]);
 
         $this->assertInternalType('object' , $request);
         $this->assertEquals('200', $request->getStatusCode());
@@ -119,7 +117,9 @@ class RoutesTest extends PHPUnit_Framework_TestCase
      */
     public function testDeleteEmoji ()
     {
-        $request = $this->client->request('DELETE', $this->url.'/emojis/91', [ 'headers' => ['Authorization'=> $this->token]]);
+        $id =  $this->emoji->where(['name' => 'TestEmojiName'])->getData('id');
+
+        $request = $this->client->request('DELETE', $this->url.'/emojis/'.$id, [ 'headers' => ['Authorization'=> $this->token]]);
 
         $this->assertInternalType('object' , $request);
         $this->assertEquals('200', $request->getStatusCode());
