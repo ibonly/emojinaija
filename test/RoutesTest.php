@@ -104,16 +104,16 @@ class RoutesTest extends PHPUnit_Framework_TestCase
     /**
      * Test PUT/PATCH emoji
      */
-    // public function testPutPatchEmoji ()
-    // {
-    //     $data = array(
-    //         'name' => 'TestName'
-    //     );
-    //     $request = $this->client->request('PUT', $this->url.'/emojis/'.$this->getTestId(),[ 'headers' => ['Authorization'=> $this->token],'form_params' => $data ]);
+    public function testPutPatchEmoji ()
+    {
+        $data = array(
+            'name' => 'TestName'
+        );
+        $request = $this->client->request('PUT', $this->url.'/emojis/'.$this->getTestId(),[ 'headers' => ['Authorization'=> $this->token],'form_params' => $data ]);
 
-    //     $this->assertInternalType('object' , $request);
-    //     $this->assertEquals('200', $request->getStatusCode());
-    // }
+        $this->assertInternalType('object' , $request);
+        $this->assertEquals('200', $request->getStatusCode());
+    }
 
     /**
      * Test DELETE an emoji
