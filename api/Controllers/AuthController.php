@@ -31,6 +31,7 @@ class AuthController implements AuthInterface
         $this->key        = getenv('ISSUE_KEY');
         $this->issued_by  = getenv('ISSUED_BY');
         $this->auth_url   = getenv('AUTH_URL');
+        $this->test_token = getenv('TEST_TOKEN');
     }
 
     /**
@@ -64,6 +65,16 @@ class AuthController implements AuthInterface
     }
 
     /**
+     * getAuthUrl Get the TEST_TOKEN value
+     *
+     * @return string
+     */
+    public function getTestToken ()
+    {
+        return $this->test_token;
+    }
+
+    /**
      * authorizationEncode Generate token using $userID
      *
      * @param  $userID
@@ -77,7 +88,7 @@ class AuthController implements AuthInterface
                 "iss" => $this->getIssuedBy(),
                 "aud" => $this->getAuthUrl(),
                 "user" => $userID,
-                "exp" => time() + 3600
+                "exp" => time() + 3600000
             );
             return JWT::encode($token, $this->getKey());
     }

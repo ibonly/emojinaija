@@ -80,7 +80,7 @@ class UserController implements UserInterface
                     $hashPassword = $key->password;
                 }
                 //confirm the password
-                return $this->decryptPassword($user, $password, $hashpassword);
+                return $this->decryptPassword($username, $password, $hashPassword);
         } catch ( DataNotFoundException $e ) {
             $app->halt(404, json_encode(['message' => 'Not Found']));
         } catch ( PasswordException $e ) {
@@ -93,9 +93,9 @@ class UserController implements UserInterface
      *
      * @param  $user
      * @param  $password
-     * @param  $hashpassword
+     * @param  $hashPassword
      */
-    public function decryptPassword ($user, $password, $hashpassword)
+    public function decryptPassword ($username, $password, $hashPassword)
     {
         if( $this->auth->passwordDecrypt($password, $hashPassword) )
             return(json_encode([

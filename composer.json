@@ -27,7 +27,7 @@
         "ibonly/potato-orm": "1.0.0.x-dev",
         "firebase/php-jwt": "^3.0",
         "vlucas/phpdotenv": "^2.0",
-        "guzzlehttp/guzzle": "4.0"
+        "guzzlehttp/guzzle": "^6.1"
     },
     "require-dev": {
         "phpunit/phpunit": "4.8.*",
