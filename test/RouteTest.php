@@ -66,7 +66,7 @@ class RoutesTest extends PHPUnit_Framework_TestCase
     public function testPOSTEmoji()
     {
         $data = array(
-            'name' => 'TestEmojiName',
+            'name' => 'TestEmojiName'.time(),
             'char' => '🎃',
             'keywords' => "apple, friut, mac",
             'category' => 'fruit'
