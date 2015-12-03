@@ -17,6 +17,8 @@ interface UserInterface
 
     public function createUser (Slim $app);
 
+    public function decryptPassword ($username, $password, $hashPassword);
+
     public function login (Slim $app);
 
     public function logout (Slim $app);

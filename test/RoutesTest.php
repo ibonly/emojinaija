@@ -2,85 +2,132 @@
 
 namespace Ibonly\NaijaEmoji\Test;
 
-use Guzzle\Http\Client;
+use Dotenv\Dotenv;
+use GuzzleHttp\Client;
+use Ibonly\NaijaEmoji\Emoji;
 use PHPUnit_Framework_TestCase;
-use Guzzle\Http\Exception\ClientErrorResponseException;
+use Ibonly\NaijaEmoji\AuthController;
+use GuzzleHttp\Exception\ClientException;
 
 class RoutesTest extends PHPUnit_Framework_TestCase
 {
-    public function setUp()
+    protected $url;
+    protected $token;
+    protected $client;
+
+    public function __construct ()
     {
-        $this->client = new Client('https://emojinaija.herokuapp.com');
-        $this->request = $this->client->get('/emojis');
-        $this->response = $this->request->send();
+        $this->emoji = new Emoji();
+        $auth = new AuthController();
+
+        $this->token = $auth->getTestToken();
+        $this->url = $auth->getAuthUrl();
+    }
+
+    public function setUp ()
+    {
+        $this->client = new Client();
+    }
+
+    public function getTestId ()
+    {
+        return $this->emoji->where(['name' => 'TestName'])->getData('id');
     }
 
     /**
-     * Test the URL
+     * @covers class::()
      */
-    public function testURL()
+    public function testInvalidEndpoint()
     {
-        $this->assertEquals("https://emojinaija.herokuapp.com/emojis", $this->request->getUrl());
+        $this->setExpectedException("GuzzleHttp\Exception\ClientException");
+
+        $request = $this->client->request('GET', $this->url.'/emogis');
     }
 
     /**
      * Test if the ouput of getAll is an object
      */
-    public function testGetAllEmoji()
+    public function testGetAllEmoji ()
     {
-        $this->assertInternalType("object", $this->response->getBody());
-        $this->assertEquals(200, $this->response->getStatusCode());
+        $request = $this->client->request('GET', $this->url.'/emojis');
+
+        $this->assertInternalType("object", $request->getBody());
+        $this->assertEquals(200, $request->getStatusCode());
     }
 
     /**
      * Test get a single emoji endpoint
      */
-    public function testGetSingleEmoji()
+    public function testGetSingleEmoji ()
     {
-        $endpoint = $this->client->get('emogis/5');
-        $this->assertEquals(200, $this->response->getStatusCode());
+        $request = $this->client->request('GET', $this->url.'/emojis/3');
+
+        $this->assertInternalType("object", $request->getBody());
+        $this->assertEquals(200, $request->getStatusCode());
     }
 
     /**
      * Test Post endpoint
      */
-   public function testPOSTEmoji()
+    public function testPOSTEmoji()
     {
-        // create our http client (Guzzle)
         $data = array(
-            'name' => 'Run',
-            'char' => '🏃',
-            'keywords' => "Run, Ere",
-            'category' => 'force'
+            'name' => 'TestEmojiName',
+            'char' => '🎃',
+            'keywords' => "apple, friut, mac",
+            'category' => 'fruit'
         );
+        $request = $this->client->request('POST', $this->url.'/emojis',[ 'headers' => ['Authorization'=> $this->token],'form_params' => $data ]);
 
-        $this->setExpectedException("Guzzle\Http\Exception\ClientErrorResponseException");
-        $request = $this->client->post('/emojis', null, json_encode($data));
-        $response = $request->send();
+        $this->assertInternalType('object' , $request);
+        $this->assertEquals('200', $request->getStatusCode());
     }
 
     /**
      * Test if Authorization Header is set
      */
-    public function testHeaderAuthorizationNotSet()
+    public function testPostIfAuthorizationNotSet ()
     {
-        $this->assertFalse(in_array('Host', array_keys($this->response->getHeaders()->toArray())
-));
-        $this->assertFalse($this->response->hasHeader("Authorization"));
+        $data = array(
+            'name' => 'TestEmojiName',
+            'char' => '🎃',
+            'keywords' => "apple, friut, mac",
+            'category' => 'fruit'
+        );
+
+        $this->setExpectedException("GuzzleHttp\Exception\ClientException");
+
+        $request = $this->client->request('POST', $this->url.'/emojis', ['form_params' => $data]);
+
     }
 
     /**
      * Test PUT/PATCH emoji
      */
-    public function testPutPatchEmoji()
+    public function testPutPatchEmoji ()
     {
         $data = array(
-            'name' => 'Run',
+            'name' => 'TestName'
         );
+        $request = $this->client->request('PUT', $this->url.'/emojis/'.$this->getTestId(),[ 'headers' => ['Authorization'=> $this->token],'form_params' => $data ]);
 
-        $this->setExpectedException("Guzzle\Http\Exception\ClientErrorResponseException");
-        $request = $this->client->put('/emojis/2', null, json_encode($data));
-        $request = $this->client->patch('/emojis/2', null, json_encode($data));
-        $response = $request->send();
+        $this->assertInternalType('object' , $request);
+        $this->assertEquals('200', $request->getStatusCode());
+    }
+
+    /**
+     * Test DELETE an emoji
+     */
+    public function testDeleteEmoji()
+    {
+
+        $this->assertInternalType('integer', $this->getTestId());
+        // $data = array(
+        //     'id' => '1'
+        // );
+        // $this->request = $this->client->get('/emojis');
+        // $request = $this->client->delete('/emojis/2', $this->request->getUrl(), json_encode($data));
+        // $response = $request->send();
+        // $this->assertEquals(406, $response->getStatusCode());
     }
 }

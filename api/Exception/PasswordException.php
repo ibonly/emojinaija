@@ -3,7 +3,7 @@
 /**
  * Exception for no records in database
  *
- * @package Ibonly\NaijaEmoji\InvalidTokenException
+ * @package Ibonly\NaijaEmoji\PasswordException
  * @author  Ibraheem ADENIYI <ibonly01@gmail.com>
  * @license MIT <https://opensource.org/licenses/MIT>
  */
@@ -12,11 +12,11 @@ namespace Ibonly\NaijaEmoji;
 
 use Exception;
 
-class InvalidTokenException extends Exception
+class PasswordException extends Exception
 {
     public function __construct ()
     {
-        parent::__construct("Invalid Token");
+        parent::__construct("Password is not correct");
     }
 
     /**

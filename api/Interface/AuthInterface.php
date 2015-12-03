@@ -14,12 +14,16 @@ interface AuthInterface
 {
     public function getKey ();
 
-    public function getIssuedBy();
+    public function getIssuedBy ();
 
-    public function getAuthUrl();
+    public function getAuthUrl ();
 
     public function authorizationEncode ($username);
 
     public function authorizationDecode ($token);
+
+    public function passwordEncrypt ($password);
+
+    public function passwordDecrypt ($password, $hashPassword);
 
 }

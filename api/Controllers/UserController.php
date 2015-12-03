@@ -17,13 +17,15 @@ use Ibonly\NaijaEmoji\AuthController;
 use Ibonly\PotatoORM\DataNotFoundException;
 use Ibonly\NaijaEmoji\InvalidTokenException;
 use Ibonly\NaijaEmoji\ProvideTokenException;
+use Ibonly\NaijaEmoji\PasswordExistException;
+use Ibonly\PotatoORM\DataAlreadyExistException;
 
 class UserController implements UserInterface
 {
     protected $user;
     protected $auth;
 
-    public function __construct()
+    public function __construct ()
     {
         $this->user = new User();
         $this->auth = new AuthController();
@@ -41,13 +43,15 @@ class UserController implements UserInterface
         $username = $app->request->params('username');
         $this->user->id = NULL;
         $this->user->username = $username;
-        $this->user->password = md5($app->request->params('password'));
+        $this->user->password = $this->auth->passwordEncrypt($app->request->params('password'));
         $this->user->date_created = date('Y-m-d H:i:s');
-
-        $save = $this->user->save();
-        if( $save )
+        try
         {
-            $app->halt(201, json_encode(['message' => 'Registration Successful. Please Login to generate your token']));
+            $save = $this->user->save();
+            if( $save )
+                $app->halt(201, json_encode(['message' => 'Registration Successful. Please Login to generate your token']));
+        } catch ( DataAlreadyExistException $e ) {
+            $app->halt(404, json_encode(['message' => 'User details already exist']));
         }
     }
 
@@ -65,22 +69,40 @@ class UserController implements UserInterface
         $password = $app->request->params('password');
         try
         {
-            $login = $this->user->where(['username' => $username, 'password' => md5($password)], 'AND')->toJson();
-            if( ! empty ($login) ){
+            //check if username is available
+            $login = $this->user->where(['username' => $username])->toJson();
+            if( ! empty ($login) )
+                $hashPassword = "";
                 $output = json_decode($login);
-                foreach ($output as $key) {
+                foreach( $output as $key )
+                {
                     $output = $key->id;
+                    $hashPassword = $key->password;
                 }
-                return(json_encode([
-                    'Username' => $username,
-                    'Authorization' => $this->auth->authorizationEncode($username)
-                ]));
-            }
-        } catch ( DataNotFoundException $e) {
+                //confirm the password
+                return $this->decryptPassword($username, $password, $hashPassword);
+        } catch ( DataNotFoundException $e ) {
             $app->halt(404, json_encode(['message' => 'Not Found']));
+        } catch ( PasswordException $e ) {
+            return $e->errorMessage();
         }
     }
 
+    /**
+     * decryptPassword and return token
+     *
+     * @param  $user
+     * @param  $password
+     * @param  $hashPassword
+     */
+    public function decryptPassword ($username, $password, $hashPassword)
+    {
+        if( $this->auth->passwordDecrypt($password, $hashPassword) )
+            return(json_encode([
+                'Username' => $username,
+                'Authorization' => $this->auth->authorizationEncode($username)
+            ]));
+    }
     /**
      * logout Log user out and destroy token
      *
@@ -98,15 +120,14 @@ class UserController implements UserInterface
                 throw new ProvideTokenException();
 
             $checkUser = $this->user->where(['username' => $tokenData->user])->toJson();
-            if( ! empty ($checkUser) ){
+            if ( ! empty ($checkUser) )
                 $this->auth->authorizationEncode(NULL);#
                 $app->halt(200, json_encode(['message' => 'Logged out Successfully']));
-            }
         } catch ( DataNotFoundException $e) {
             $app->halt(404, json_encode(['message' => 'Not Found']));
-        } catch ( InvalidTokenException $e ){
+        } catch ( InvalidTokenException $e ) {
             $app->halt(405, json_encode(['Message' => 'Invalid Token']));
-        } catch ( ProvideTokenException $e ){
+        } catch ( ProvideTokenException $e ) {
             $app->halt(406, json_encode(['Message' => 'Enter a valid Token']));
         }
     }
