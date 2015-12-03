@@ -11,7 +11,7 @@ matrix:
         - php: 7.0
         - php: hhvm
 
-install: travis_retry composer install --no-interaction --prefer-dist
+install: travis_retry composer install --no-interaction
 
 script:
     "phpunit --coverage-text --coverage-clover build/logs/clover.xml"
