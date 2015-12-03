@@ -227,12 +227,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/andela-iadeniyi/Potato-ORM.git",
-                "reference": "a8fe3ec7cb1a531539ded3e227c4211816bee705"
+                "reference": "b024faba132ed758aa438c94e743a8a5d022f972"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/andela-iadeniyi/Potato-ORM/zipball/a8fe3ec7cb1a531539ded3e227c4211816bee705",
-                "reference": "a8fe3ec7cb1a531539ded3e227c4211816bee705",
+                "url": "https://api.github.com/repos/andela-iadeniyi/Potato-ORM/zipball/b024faba132ed758aa438c94e743a8a5d022f972",
+                "reference": "b024faba132ed758aa438c94e743a8a5d022f972",
                 "shasum": ""
             },
             "require": {
@@ -260,7 +260,7 @@
                     "email": "ibonly01@gmail.com"
                 }
             ],
-            "time": "2015-11-27 14:44:46"
+            "time": "2015-12-03 14:27:49"
         },
         {
             "name": "psr/http-message",
