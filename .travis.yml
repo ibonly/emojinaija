@@ -14,4 +14,4 @@ matrix:
 install: travis_retry composer install --no-interaction --prefer-source
 
 script:
-    "phpunit --testsuite=unit --coverage-text --coverage-clover build/logs/clover.xml"
+    "phpunit --coverage-text --coverage-clover build/logs/clover.xml"
