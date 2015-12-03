@@ -122,9 +122,9 @@ class AuthController implements AuthInterface
      *
      * @return bool
      */
-    public function passwordDecrypt($password, $hashPassword)
+    public function passwordDecrypt ($password, $hashPassword)
     {
-        if( password_verify($password, $hashPassword) )
+        if ( password_verify($password, $hashPassword) )
         {
             return true;
         }
@@ -136,7 +136,7 @@ class AuthController implements AuthInterface
      */
     protected function loadEnv ()
     {
-        if( ! getenv("APP_ENV" !== "production"))
+        if ( ! getenv("APP_ENV" !== "production"))
         {
             $dotenv = new Dotenv($_SERVER['DOCUMENT_ROOT']);
             $dotenv->load();

@@ -36,7 +36,7 @@ class RoutesTest extends PHPUnit_Framework_TestCase
     /**
      * Test get a single emoji endpoint
      */
-    public function testGetSingleEmoji()
+    public function testGetSingleEmoji ()
     {
         $request = $this->client->get('/emojis');
         $response = $request->send();
@@ -50,10 +50,10 @@ class RoutesTest extends PHPUnit_Framework_TestCase
     {
         // create our http client (Guzzle)
         $data = array(
-            'name' => 'Run',
-            'char' => '🏃',
-            'keywords' => "Run, Ere",
-            'category' => 'force'
+            'name' => 'skate',
+            'char' => '🏄'
+            'keywords' => "skate, board, ice",
+            'category' => 'sport'
         );
 
         $this->setExpectedException("Guzzle\Http\Exception\ClientErrorResponseException");
@@ -64,9 +64,9 @@ class RoutesTest extends PHPUnit_Framework_TestCase
     /**
      * Test if Authorization Header is set
      */
-    public function testHeaderAuthorizationNotSet()
+    public function testHeaderAuthorizationNotSet ()
     {
-        $request = $this->client->get('/emojis');
+        $request =$this->client->get('/emojis');
         $response = $request->send();
         $this->assertFalse(in_array('Host', array_keys($response->getHeaders()->toArray())
 ));
@@ -76,9 +76,9 @@ class RoutesTest extends PHPUnit_Framework_TestCase
     /**
      * Test PUT/PATCH emoji
      */
-    public function testPutPatchEmoji()
+    public function testPutPatchEmoji ()
     {
-        $data = array(
+        $data = aray(
             'name' => 'Run',
         );
 

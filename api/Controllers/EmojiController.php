@@ -173,7 +173,7 @@ class EmojiController implements EmojiInterface
         $tokenData = $app->request->headers->get('Authorization');
         try
         {
-            if ( ! isset($tokenData) )
+            if ( ! isset( $tokenData ) )
                 throw new ProvideTokenException();
 
             $this->auth->authorizationDecode($tokenData);
@@ -186,7 +186,7 @@ class EmojiController implements EmojiInterface
             $app->halt(405, json_encode(['Message' => 'Invalid Token']));
         } catch ( ProvideTokenException $e ) {
             $app->halt(406, json_encode(['Message' => 'Enter a valid Token']));
-        }catch ( DataNotFoundException $e ) {
+        } catch ( DataNotFoundException $e ) {
             $app->halt(401, json_encode(['Message' => 'Emoji not found']));
         }
     }

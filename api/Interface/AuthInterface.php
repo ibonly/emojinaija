@@ -24,4 +24,6 @@ interface AuthInterface
 
     public function passwordEncrypt ($password);
 
+    public function passwordDecrypt ($password, $hashPassword);
+
 }
