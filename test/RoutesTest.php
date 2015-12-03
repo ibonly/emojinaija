@@ -35,7 +35,7 @@ class RoutesTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers class::()
+     * testInvalidEndpoint
      */
     public function testInvalidEndpoint()
     {
