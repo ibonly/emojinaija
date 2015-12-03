@@ -12,6 +12,7 @@ use GuzzleHttp\Exception\ClientException;
 class RoutesTest extends PHPUnit_Framework_TestCase
 {
     protected $url;
+    protected $name;
     protected $token;
     protected $client;
 
@@ -21,6 +22,7 @@ class RoutesTest extends PHPUnit_Framework_TestCase
 
         $this->token = $values->getTestToken();
         $this->url = $values->getAuthUrl();
+        $this->emojiName = 'TestEmojiName'.time();
     }
 
     public function setUp ()
@@ -44,7 +46,7 @@ class RoutesTest extends PHPUnit_Framework_TestCase
      */
     public function testGetAllEmoji ()
     {
-        $data =  $this->emoji->where(['name' => 'TestEmojiName'])->toJson();
+        $data =  $this->emoji->where(['name' => $this->emojiName])->toJson();
 
         $request = $this->client->request('GET', $this->url.'/emojis');
 
@@ -69,7 +71,7 @@ class RoutesTest extends PHPUnit_Framework_TestCase
     public function testPOSTEmoji()
     {
         $data = array(
-            'name' => 'TestEmojiName',
+            'name' => $this->emojiName,
             'char' => '🎃',
             'keywords' => "apple, friut, mac",
             'category' => 'fruit'
@@ -86,7 +88,7 @@ class RoutesTest extends PHPUnit_Framework_TestCase
     public function testPostIfAuthorizationNotSet ()
     {
         $data = array(
-            'name' => 'TestEmojiName',
+            'name' => $this->emojiName,
             'char' => '🎃',
             'keywords' => "apple, friut, mac",
             'category' => 'fruit'
@@ -104,7 +106,7 @@ class RoutesTest extends PHPUnit_Framework_TestCase
     public function testPutPatchEmoji ()
     {
         $data = array(
-            'name' => 'TestName'
+            'category' => 'Fruit Flavour'
         );
         $request = $this->client->request('PUT', $this->url.'/emojis/91',[ 'headers' => ['Authorization'=> $this->token],'form_params' => $data ]);
 
