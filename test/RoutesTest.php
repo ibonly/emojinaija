@@ -2,46 +2,24 @@
 
 namespace Ibonly\NaijaEmoji\Test;
 
-use Dotenv\Dotenv;
-use GuzzleHttp\Client;
-use Ibonly\NaijaEmoji\Emoji;
+use Guzzle\Http\Client;
 use PHPUnit_Framework_TestCase;
-use Ibonly\NaijaEmoji\AuthController;
-use GuzzleHttp\Exception\ClientException;
+use Guzzle\Http\Exception\ClientErrorResponseException;
 
 class RoutesTest extends PHPUnit_Framework_TestCase
 {
-    protected $url;
-    protected $token;
-    protected $client;
-
-    public function __construct ()
-    {
-        $this->emoji = new Emoji();
-        $auth = new AuthController();
-
-        $this->token = $auth->getTestToken();
-        $this->url = $auth->getAuthUrl();
-    }
-
     public function setUp ()
     {
-        $this->client = new Client();
-    }
-
-    public function getTestId ()
-    {
-        return $this->emoji->where(['name' => 'TestName'])->getData('id');
+        $this->client = new Client('https://emojinaija.herokuapp.com');
     }
 
     /**
-     * @covers class::()
+     * Test the URL
      */
-    public function testInvalidEndpoint()
+    public function testURL ()
     {
-        $this->setExpectedException("GuzzleHttp\Exception\ClientException");
-
-        $request = $this->client->request('GET', $this->url.'/emogis');
+        $this->request = $this->client->get('/emojis');
+        $this->assertEquals("https://emojinaija.herokuapp.com/emojis", $this->request->getUrl());
     }
 
     /**
@@ -49,10 +27,10 @@ class RoutesTest extends PHPUnit_Framework_TestCase
      */
     public function testGetAllEmoji ()
     {
-        $request = $this->client->request('GET', $this->url.'/emojis');
-
-        $this->assertInternalType("object", $request->getBody());
-        $this->assertEquals(200, $request->getStatusCode());
+        $request = $this->client->get('/emojis');
+        $response = $request->send();
+        $this->assertInternalType("object", $response->getBody());
+        $this->assertEquals(200, $response->getStatusCode());
     }
 
     /**
@@ -60,45 +38,39 @@ class RoutesTest extends PHPUnit_Framework_TestCase
      */
     public function testGetSingleEmoji ()
     {
-        $request = $this->client->request('GET', $this->url.'/emojis/3');
-
-        $this->assertInternalType("object", $request->getBody());
-        $this->assertEquals(200, $request->getStatusCode());
+        $request = $this->client->get('/emojis');
+        $response = $request->send();
+        $this->assertEquals(200, $response->getStatusCode());
     }
 
     /**
      * Test Post endpoint
      */
-    public function testPOSTEmoji()
+   public function testPOSTEmoji()
     {
+        // create our http client (Guzzle)
         $data = array(
-            'name' => 'TestEmojiName',
-            'char' => '🎃',
-            'keywords' => "apple, friut, mac",
-            'category' => 'fruit'
+            'name' => 'skate',
+            'char' => '🏄'
+            'keywords' => "skate, board, ice",
+            'category' => 'sport'
         );
-        $request = $this->client->request('POST', $this->url.'/emojis',[ 'headers' => ['Authorization'=> $this->token],'form_params' => $data ]);
 
-        $this->assertInternalType('object' , $request);
-        $this->assertEquals('200', $request->getStatusCode());
+        $this->setExpectedException("Guzzle\Http\Exception\ClientErrorResponseException");
+        $request = $this->client->post('/emojis', null, json_encode($data));
+        $response = $request->send();
     }
 
     /**
      * Test if Authorization Header is set
      */
-    public function testPostIfAuthorizationNotSet ()
+    public function testHeaderAuthorizationNotSet ()
     {
-        $data = array(
-            'name' => 'TestEmojiName',
-            'char' => '🎃',
-            'keywords' => "apple, friut, mac",
-            'category' => 'fruit'
-        );
-
-        $this->setExpectedException("GuzzleHttp\Exception\ClientException");
-
-        $request = $this->client->request('POST', $this->url.'/emojis', ['form_params' => $data]);
-
+        $request =$this->client->get('/emojis');
+        $response = $request->send();
+        $this->assertFalse(in_array('Host', array_keys($response->getHeaders()->toArray())
+));
+        $this->assertFalse($response->hasHeader("Authorization"));
     }
 
     /**
@@ -106,28 +78,13 @@ class RoutesTest extends PHPUnit_Framework_TestCase
      */
     public function testPutPatchEmoji ()
     {
-        $data = array(
-            'name' => 'TestName'
+        $data = aray(
+            'name' => 'Run',
         );
-        $request = $this->client->request('PUT', $this->url.'/emojis/'.$this->getTestId(),[ 'headers' => ['Authorization'=> $this->token],'form_params' => $data ]);
 
-        $this->assertInternalType('object' , $request);
-        $this->assertEquals('200', $request->getStatusCode());
-    }
-
-    /**
-     * Test DELETE an emoji
-     */
-    public function testDeleteEmoji()
-    {
-
-        $this->assertInternalType('integer', $this->getTestId());
-        // $data = array(
-        //     'id' => '1'
-        // );
-        // $this->request = $this->client->get('/emojis');
-        // $request = $this->client->delete('/emojis/2', $this->request->getUrl(), json_encode($data));
-        // $response = $request->send();
-        // $this->assertEquals(406, $response->getStatusCode());
+        $this->setExpectedException("Guzzle\Http\Exception\ClientErrorResponseException");
+        $request = $this->client->put('/emojis/2', null, json_encode($data));
+        $request = $this->client->patch('/emojis/2', null, json_encode($data));
+        $response = $request->send();
     }
 }
