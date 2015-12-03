@@ -29,11 +29,6 @@ class RoutesTest extends PHPUnit_Framework_TestCase
         $this->client = new Client();
     }
 
-    public function getTestId ()
-    {
-        return $this->emoji->where(['name' => 'TestName'])->getData('id');
-    }
-
     /**
      * testInvalidEndpoint
      */
@@ -88,6 +83,7 @@ class RoutesTest extends PHPUnit_Framework_TestCase
      */
     public function testPostIfAuthorizationNotSet ()
     {
+        $id = $this->emoji->where(['name' => 'TestEmojiName'])->getData('id');
         $data = array(
             'name' => 'TestEmojiName',
             'char' => '🎃',
@@ -109,7 +105,7 @@ class RoutesTest extends PHPUnit_Framework_TestCase
         $data = array(
             'name' => 'TestName'
         );
-        $request = $this->client->request('PUT', $this->url.'/emojis/'.$this->getTestId(),[ 'headers' => ['Authorization'=> $this->token],'form_params' => $data ]);
+        $request = $this->client->request('PUT', $this->url.'/emojis/57',[ 'headers' => ['Authorization'=> $this->token],'form_params' => $data ]);
 
         $this->assertInternalType('object' , $request);
         $this->assertEquals('200', $request->getStatusCode());
@@ -118,15 +114,11 @@ class RoutesTest extends PHPUnit_Framework_TestCase
     /**
      * Test DELETE an emoji
      */
-    public function testDeleteEmoji()
+    public function testDeleteEmoji ()
     {
-        $this->assertInternalType('integer', $this->getTestId());
-        // $data = array(
-        //     'id' => '1'
-        // );
-        // $this->request = $this->client->get('/emojis');
-        // $request = $this->client->delete('/emojis/2', $this->request->getUrl(), json_encode($data));
-        // $response = $request->send();
-        // $this->assertEquals(406, $response->getStatusCode());
+        $request = $this->client->request('DELETE', $this->url.'/emojis/57', [ 'headers' => ['Authorization'=> $this->token]]);
+
+        $this->assertInternalType('object' , $request);
+        $this->assertEquals('200', $request->getStatusCode());
     }
 }
